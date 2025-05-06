@@ -1,22 +1,15 @@
 <script lang="ts">
-	import hljs from "highlight.js/lib/core";
-	import python from "highlight.js/lib/languages/python";
-	import "highlight.js/styles/base16/snazzy.css";
-
-	import { onMount } from "svelte";
+	import Highlight, { LineNumbers } from "svelte-highlight";
+	import python from "svelte-highlight/languages/python";
+	import snazzy from "svelte-highlight/styles/snazzy";
 
 	export let code = "";
-
-	let codeElement: HTMLElement | null = null;
-
-	onMount(() => {
-		hljs.registerLanguage("python", python);
-		hljs.highlightElement(codeElement!);
-	});
-
-	$: if (codeElement && code) {
-		hljs.highlightElement(codeElement);
-	}
 </script>
 
-<pre><code bind:this={codeElement} class="language-python">{code}</code></pre>
+<svelte:head>
+	{@html snazzy}
+</svelte:head>
+
+<Highlight language={python} {code} let:highlighted>
+	<LineNumbers {highlighted} wrapLines />
+</Highlight>
