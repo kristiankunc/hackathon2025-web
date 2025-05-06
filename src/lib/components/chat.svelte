@@ -14,7 +14,9 @@
 
 		// TODO: API call
 		setTimeout(() => {
-			messages = [...messages, { role: "assistant", content: "sybau 💔💔🥀🥀😭" }];
+			const responses = ["ts pmo icl 😭", "Gurt: Yo", "sybau 💔💔🥀🥀😭"];
+			const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+			messages = [...messages, { role: "assistant", content: randomResponse }];
 			input = "";
 			loading = false;
 		}, 1000);
@@ -34,7 +36,7 @@
 		{/if}
 	</div>
 
-	<form on:submit|preventDefault={send}>
+	<form class="chat__form" on:submit|preventDefault={send}>
 		<input bind:value={input} placeholder="Ask something..." />
 		<Button type="submit" {loading} text="Send" />
 	</form>

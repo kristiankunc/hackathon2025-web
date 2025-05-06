@@ -6,8 +6,10 @@ $primary-color: #ff6ac1;
 $secondary-color: #ff9f43;
 $tertiary-color: #5af78e;
 $quaternary-color: #57c7ff;
+$quaternary-color-darker: #0a4364;
 $comment-color: #78787e;
 
+$btn-hover-color: #1d1e27;
 $btn-loading-color: #6c757d;
 $btn-disabled-color: #949ca3;
 
@@ -18,7 +20,7 @@ $header-height: 4.5rem;
 // Borders
 $border-thickness: 1px;
 $border-style: solid;
-$border-color: #e0e0e0;
+$border-color: #ccc;
 $default-border: $border-thickness $border-style $border-color;
 
 // Font Sizes and Line Heights
