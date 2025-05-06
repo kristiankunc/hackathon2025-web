@@ -11,9 +11,6 @@
 	<div class="navbar__title">{appName}</div>
 	{#if $page.data.user}
 		<span>{$page.data.user.name}</span>
-		<button on:click={() => signOut()}>
-			<span>Sign out</span>
-		</button>
 		<Button type="button" onClick={() => signOut()}>Sign out</Button>
 	{:else}
 		<Button onClick={() => signIn("google")}>Sign in</Button>
