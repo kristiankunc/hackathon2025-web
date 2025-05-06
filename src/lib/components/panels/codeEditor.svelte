@@ -1,16 +1,16 @@
 <script lang="ts">
-	import hljs from 'highlight.js/lib/core';
-	import python from 'highlight.js/lib/languages/python';
-	import 'highlight.js/styles/base16/snazzy.css';
+	import hljs from "highlight.js/lib/core";
+	import python from "highlight.js/lib/languages/python";
+	import "highlight.js/styles/base16/snazzy.css";
 
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
-	export let code = '';
+	export let code = "";
 
 	let codeElement: HTMLElement | null = null;
 
 	onMount(() => {
-		hljs.registerLanguage('python', python);
+		hljs.registerLanguage("python", python);
 		hljs.highlightElement(codeElement!);
 	});
 
