@@ -66,10 +66,30 @@ for num in range(lower, upper + 1):
 	<script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
 </svelte:head>
 
-<py-script>
-from datetime import datetime
-now = datetime.now()
-print(now.strftime("%m/%d/%Y, %H:%M:%S"))
+<!-- prettier-ignore -->
+<py-script style="display: none;">
+from pyscript import document
+from pyscript import window
+
+def on_load(event):
+    print("Page loaded")
+    
+window.addEventListener("load", on_load)
+
+def forward():
+    print("forward")
+
+def backward():
+    print("backward")
+
+def left():
+    print("left")
+</py-script>
+
+<!-- prettier-ignore -->
+<py-script style="display: none;">
+forward()
+backward()
 </py-script>
 
 <PanelContainer>
