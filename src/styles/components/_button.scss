@@ -1,0 +1,40 @@
+@use "../abstract" as *;
+
+.button {
+	background-color: $background-color;
+	color: $text-color;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	transition: background-color $transition-duration $transition-ease;
+
+	&:hover {
+		background-color: darken($background-color, 10%);
+	}
+
+	&:disabled {
+		background-color: $btn-disabled-color;
+		cursor: not-allowed;
+	}
+
+	&:disabled:hover {
+		background-color: $btn-disabled-color;
+	}
+
+	&.loading {
+		background-color: $btn-loading-color;
+		cursor: not-allowed;
+	}
+
+	&.loading:hover {
+		background-color: $btn-loading-color;
+	}
+}

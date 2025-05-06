@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Button from "$lib/components/button.svelte";
+
 	let messages: { role: string; content: string }[] = [{ role: "system", content: "You are a helpful assistant." }];
 
 	let input = "";
@@ -34,6 +36,6 @@
 
 	<form on:submit|preventDefault={send}>
 		<input bind:value={input} placeholder="Ask something..." />
-		<button type="submit" disabled={loading}>Send</button>
+		<Button type="submit" {loading} text="Send" />
 	</form>
 </div>

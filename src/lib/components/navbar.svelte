@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { signIn, signOut } from "@auth/sveltekit/client";
 	import { page } from "$app/stores";
+
+	import Button from "$lib/components/button.svelte";
+
 	let appName = "Hackathon 2025";
 </script>
 
@@ -11,9 +14,8 @@
 		<button on:click={() => signOut()}>
 			<span>Sign out</span>
 		</button>
+		<Button type="button" onClick={() => signOut()}>Sign out</Button>
 	{:else}
-		<button on:click={() => signIn("google")}>
-			<span>Sign in</span>
-		</button>
+		<Button onClick={() => signIn("google")}>Sign in</Button>
 	{/if}
 </header>
