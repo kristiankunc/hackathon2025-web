@@ -1,4 +1,7 @@
-<script>
+<script lang="ts">
+	import { signIn, signOut } from "@auth/sveltekit/client";
+	import { page } from "$app/stores";
+
 	import Button from "$lib/components/button.svelte";
 
 	let appName = "Hackathon 2025";
@@ -6,5 +9,13 @@
 
 <header class="navbar">
 	<div class="navbar__title">{appName}</div>
-	<Button type="button">Login</Button>
+	{#if $page.data.user}
+		<span>{$page.data.user.name}</span>
+		<button on:click={() => signOut()}>
+			<span>Sign out</span>
+		</button>
+		<Button type="button" onClick={() => signOut()}>Sign out</Button>
+	{:else}
+		<Button onClick={() => signIn("google")}>Sign in</Button>
+	{/if}
 </header>
