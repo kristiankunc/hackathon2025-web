@@ -1,7 +1,7 @@
 <script lang="ts">
 	import hljs from 'highlight.js/lib/core';
 	import python from 'highlight.js/lib/languages/python';
-	import 'highlight.js/styles/github-dark.css';
+	import 'highlight.js/styles/base16/snazzy.css';
 
 	import { onMount } from 'svelte';
 
