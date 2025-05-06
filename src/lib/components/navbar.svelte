@@ -7,7 +7,7 @@
 <header class="navbar">
 	<div class="navbar__title">{appName}</div>
 	{#if $page.data.user}
-		<span class="mr-4 text-sm font-semibold">{$page.data.user.name}</span>
+		<span>{$page.data.user.name}</span>
 		<button on:click={() => signOut()}>
 			<span>Sign out</span>
 		</button>
