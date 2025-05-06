@@ -21,7 +21,7 @@
 
 <div class="chat">
 	<div class="chat__messages">
-		{#each messages.slice(1) as m}
+		{#each messages as m}
 			<div class="chat__message {m.role}">
 				<strong>{m.role === "user" ? "You" : "AI"}:</strong>
 				{m.content}
