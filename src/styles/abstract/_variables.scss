@@ -1,0 +1,55 @@
+// Colors
+
+// Typography
+$font-family: "Poppins", sans-serif;
+$header-height: 5rem;
+
+// Breakpoints
+$breakpoint-xs: 480px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 1024px;
+$breakpoint-lg: 1440px;
+
+$breakpoints: (
+	xs: (
+		max-width: $breakpoint-xs
+	),
+	sm: (
+		min-width: $breakpoint-xs
+	),
+	md: (
+		min-width: $breakpoint-sm
+	),
+	lg: (
+		min-width: $breakpoint-md
+	)
+);
+
+// Borders
+$border-thickness: 1px;
+$border-style: solid;
+$border-color: #e0e0e0;
+$default-border: $border-thickness $border-style $border-color;
+
+// Font Sizes and Line Heights
+$font-size-small: 0.875rem;
+$font-size-medium: 1rem;
+$font-size-large: 1.25rem;
+
+$line-height-small: 1.4;
+$line-height-normal: 1.6;
+
+// Transition and Animation
+$transition-duration: 0.2s;
+$transition-ease: ease-in-out;
+
+// Z-Index Values
+$z-index-dropdown: 1000;
+$z-index-modal: 1050;
+$z-index-tooltip: 1500;
+
+// Others
+$image-path: "../images/";
+$border-radius: 0.625rem;
+$section-padding: 2rem;
+$section-padding-sm: 1.5rem;

@@ -1,0 +1,5 @@
+@use "./variables" as *;
+
+@function content-height() {
+  @return calc(100vh - $header-height);
+}

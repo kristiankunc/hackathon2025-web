@@ -1,0 +1,44 @@
+@use "../abstract" as *;
+
+body {
+  font-family: $font-family;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+.section__title {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.section__subtitle {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.section__text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.section__link {
+  font-size: 1rem;
+  line-height: 1.5;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.section__image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
