@@ -1,6 +1,8 @@
+@use "../abstract" as *;
+
 .panel-container {
 	display: flex;
-	height: 100vh;
+	height: content-height();
 	width: 100%;
 	overflow: hidden;
 }

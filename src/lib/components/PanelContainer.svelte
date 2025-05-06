@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Panel from "./Panel.svelte";
-	import Divider from "./Divider.svelte";
+	import Panel from "./panel.svelte";
+	import Divider from "./divider.svelte";
 	import { onMount } from "svelte";
 
 	let left = 50;
