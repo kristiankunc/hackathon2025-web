@@ -1,5 +1,6 @@
 // Colors
 $background-color: #282a36;
+$background-color-darker: #17181f;
 $text-color: #e2e4e5;
 $primary-color: #ff6ac1;
 $secondary-color: #ff9f43;
@@ -10,27 +11,6 @@ $comment-color: #78787e;
 // Typography
 $font-family: "Poppins", sans-serif;
 $header-height: 4.5rem;
-
-// Breakpoints
-$breakpoint-xs: 480px;
-$breakpoint-sm: 768px;
-$breakpoint-md: 1024px;
-$breakpoint-lg: 1440px;
-
-$breakpoints: (
-	xs: (
-		max-width: $breakpoint-xs
-	),
-	sm: (
-		min-width: $breakpoint-xs
-	),
-	md: (
-		min-width: $breakpoint-sm
-	),
-	lg: (
-		min-width: $breakpoint-md
-	)
-);
 
 // Borders
 $border-thickness: 1px;
