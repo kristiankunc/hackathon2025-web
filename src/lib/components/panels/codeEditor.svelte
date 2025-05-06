@@ -13,10 +13,6 @@
 		hljs.registerLanguage("python", python);
 		hljs.highlightElement(codeElement!);
 	});
-
-	$: if (codeElement && code) {
-		hljs.highlightElement(codeElement);
-	}
 </script>
 
 <pre><code bind:this={codeElement} class="language-python">{code}</code></pre>
