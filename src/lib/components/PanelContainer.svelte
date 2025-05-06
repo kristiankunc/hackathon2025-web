@@ -10,6 +10,8 @@
 	let draggingLeft = false;
 	let draggingRight = false;
 
+	const minWidth = 25;
+
 	const startLeftDrag = () => (draggingLeft = true);
 	const startRightDrag = () => (draggingRight = true);
 
@@ -27,18 +29,18 @@
 
 		if (draggingLeft) {
 			const newLeft = (mouseX / totalWidth) * 100;
-			left = Math.max(10, Math.min(newLeft, 80));
+			left = Math.max(minWidth, Math.min(newLeft, 100 - minWidth * 2));
 			const remaining = 100 - left;
-			right = Math.max(10, Math.min(right, remaining - 10));
+			right = Math.max(minWidth, Math.min(right, remaining - minWidth));
 			middle = 100 - left - right;
 		}
 
 		if (draggingRight) {
 			const fromRight = totalWidth - mouseX;
 			const newRight = (fromRight / totalWidth) * 100;
-			right = Math.max(10, Math.min(newRight, 80));
+			right = Math.max(minWidth, Math.min(newRight, 100 - minWidth * 2));
 			const remaining = 100 - right;
-			left = Math.max(10, Math.min(left, remaining - 10));
+			left = Math.max(minWidth, Math.min(left, remaining - minWidth));
 			middle = 100 - left - right;
 		}
 	}
