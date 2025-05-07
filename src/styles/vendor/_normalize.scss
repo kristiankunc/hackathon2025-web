@@ -159,6 +159,7 @@ img {
 
 button,
 input,
+textarea,
 optgroup,
 select,
 textarea {
@@ -174,7 +175,7 @@ textarea {
  */
 
 button,
-input {
+input, textarea {
 	/* 1 */
 	overflow: visible;
 }
