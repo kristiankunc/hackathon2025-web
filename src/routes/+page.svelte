@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
 	import PanelContainer from "$lib/components/panelContainer.svelte";
 	import CodeEditor from "$lib/components/panels/codeEditor.svelte";
 	import Chat from "$lib/components/chat.svelte";
+	import { env } from "$env/dynamic/public";
+
+	let iframe: HTMLIFrameElement | undefined = undefined;
+	let isUnityReady = $state(false);
 
 	let code = `
 lower = 900
@@ -17,47 +21,6 @@ for num in range(lower, upper + 1):
 			   break
 	   else:
 		   print(num)
-
-lower = 900
-upper = 1000
-
-print("Prime numbers between", lower, "and", upper, "are:")
-
-for num in range(lower, upper + 1):
-   # all prime numbers are greater than 1
-   if num > 1:
-       for i in range(2, num):
-           if (num % i) == 0:
-               break
-       else:
-           print(num)
-
-lower = 900
-upper = 1000
-
-print("Prime numbers between", lower, "and", upper, "are:")
-
-for num in range(lower, upper + 1):
-   # all prime numbers are greater than 1
-   if num > 1:
-       for i in range(2, num):
-           if (num % i) == 0:
-               break
-       else:
-           print(num)
-lower = 900
-upper = 1000
-
-print("Prime numbers between", lower, "and", upper, "are:")
-
-for num in range(lower, upper + 1):
-   # all prime numbers are greater than 1
-   if num > 1:
-       for i in range(2, num):
-           if (num % i) == 0:
-               break
-       else:
-           print(num)
 `;
 </script>
 
@@ -90,10 +53,9 @@ klass = myClass()
 # do the whole program here
 # When all done, call klass.shutdown()
 </py-script>
-    
 
 <PanelContainer>
-	<div slot="left"><button on:click={() => (code = `print("no hello for you")`)}>Change Code</button></div>
+	<div slot="left"><iframe bind:this={iframe} title="Game window" src={env.PUBLIC_UNITY_INSTANCE_URL} class="h-lvh w-full"></iframe></div>
 	<div slot="middle">
 		{#key code}
 			<CodeEditor {code} />
@@ -101,7 +63,7 @@ klass = myClass()
 	</div>
 	<div slot="right">
 		<Chat />
-        <button id="mybutton" data-value="12" aria-label="Add one">Click Me</button>
-        <div id="resultdiv">calculated data will come here on button click</div>
+		<button id="mybutton" data-value="12" aria-label="Add one">Click Me</button>
+		<div id="resultdiv">calculated data will come here on button click</div>
 	</div>
 </PanelContainer>
