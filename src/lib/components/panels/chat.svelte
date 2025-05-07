@@ -12,7 +12,7 @@
 	let messages = $state<Message[]>([
 		{
 			role: "assistant",
-			content: "Hello, how can I assist you today?",
+			content: "Hello, how can I assist you today?"
 		}
 	]);
 	let input = $state("");
@@ -29,7 +29,7 @@
 		input = "";
 
 		const rawResponse = await chatgptRequest(content);
-		const { code, explanation } = (await rawResponse.json());
+		const { code, explanation } = await rawResponse.json();
 
 		if (code) {
 			onResponse(code);
@@ -61,15 +61,14 @@
 	async function chatgptRequest(inputValue: string) {
 		let response = await fetch("http://localhost:5173/gameselect/" + gameID, {
 			method: "POST",
-			headers: {"Content-Type": "application/json"},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				message: inputValue
-			}),
+			})
 		});
 
 		return response;
 	}
-
 </script>
 
 <div class="chat">

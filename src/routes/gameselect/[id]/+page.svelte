@@ -3,9 +3,9 @@
 	import CodeEditor from "$lib/components/panels/codeEditor.svelte";
 	import Chat from "$lib/components/panels/chat.svelte";
 
-    let data = $props()
+	let data = $props();
 
-    let code = $state("");
+	let code = $state("");
 
 	function handleResponse(message: string) {
 		// const match = message.match(/```python\n([\s\S]*?)```/);
@@ -17,7 +17,7 @@
 </script>
 
 <PanelContainer>
-	<div slot="left"><button onclick={() => (console.log("Game interactions..."))}>Run Code</button></div>
+	<div slot="left"><button onclick={() => console.log("Game interactions...")}>Run Code</button></div>
 	<div slot="middle">
 		{#key code}
 			<CodeEditor {code} />

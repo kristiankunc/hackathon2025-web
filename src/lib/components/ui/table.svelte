@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let columns: string[] = [];
-	export let rows: { [key: string]: any, link?: string }[] = [];
+	export let rows: { [key: string]: any; link?: string }[] = [];
 </script>
 
 <table class="table">
@@ -14,7 +14,7 @@
 	<tbody>
 		{#each rows as row}
 			{#if row.link}
-				<tr class="clickable-row" on:click={() => window.location.href = row.link ?? '#'}>
+				<tr class="clickable-row" on:click={() => (window.location.href = row.link ?? "#")}>
 					{#each columns as col}
 						<td>{row[col]}</td>
 					{/each}
