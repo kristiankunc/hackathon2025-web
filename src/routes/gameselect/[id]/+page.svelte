@@ -15,7 +15,9 @@
 </script>
 
 <PanelContainer>
-	<div slot="left"><button onclick={() => console.log("Game interactions...")}>Run Code</button></div>
+	<div slot="left"><button onclick={() => console.log("Game interactions...")}>Run Code</button>
+		<iframe src="http://127.0.0.1:3002/index.html" width="100%" height="500px" title="Hra"></iframe>
+	</div>
 	<div slot="middle">
 		{#key code}
 			<CodeEditor {code} />
