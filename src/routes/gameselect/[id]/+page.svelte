@@ -59,6 +59,14 @@ for num in range(lower, upper + 1):
        else:
            print(num)
 `;
+
+	function handleResponse(message: string) {
+		// const match = message.match(/```python\n([\s\S]*?)```/);
+		// if (match) {
+		// code = match[1];
+		// }
+		code = message;
+	}
 </script>
 
 <PanelContainer>
@@ -69,6 +77,6 @@ for num in range(lower, upper + 1):
 		{/key}
 	</div>
 	<div slot="right">
-		<Chat />
+		<Chat onResponse={handleResponse} />
 	</div>
 </PanelContainer>

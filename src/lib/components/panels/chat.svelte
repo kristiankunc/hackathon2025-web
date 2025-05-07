@@ -1,43 +1,90 @@
 <script lang="ts">
 	import Button from "$lib/components/ui/button.svelte";
 
-	let messages: { role: string; content: string }[] = [{ role: "system", content: "You are a helpful assistant." }];
+	type Message = {
+		role: "user" | "assistant";
+		content: string;
+	};
 
-	let input = "";
-	let loading = false;
+	let { onResponse } = $props();
 
-	async function send() {
+	let messages = $state<Message[]>([
+		{
+			role: "assistant",
+			content: 'Welcome! Type one of these commands to see an example:\n- "loop"\n- "function"\n- "file"\n- "math"\n- "comprehension"'
+		}
+	]);
+	let input = $state("");
+	let loading = $state(false);
+
+	async function send(event: Event) {
+		event.preventDefault();
 		if (!input.trim()) return;
 
-		messages = [...messages, { role: "user", content: input }];
+		const content = input.trim();
+		messages = [...messages, { role: "user", content }];
 		loading = true;
+		input = "";
 
-		// TODO: API call
-		setTimeout(() => {
-			const responses = ["ts pmo icl 😭", "Gurt: Yo", "sybau 💔💔🥀🥀😭"];
-			const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-			messages = [...messages, { role: "assistant", content: randomResponse }];
-			input = "";
-			loading = false;
-		}, 1000);
+		const rawResponse = await simulateModelResponse(content);
+		const { code, explanation } = extractCodeAndExplanation(rawResponse);
+
+		if (code) {
+			onResponse(code);
+		}
+
+		messages = [...messages, { role: "assistant", content: explanation }];
+		loading = false;
+	}
+
+	async function simulateModelResponse(inputValue: string): Promise<string> {
+		const responses: Record<string, string> = {
+			loop: `Here is a loop example:\n\`\`\`python\nfor i in range(5):\n    print(f"Iteration {i}")\n\`\`\``,
+			function: `Here is a function:\n\`\`\`python\ndef greet(name):\n    return f"Hello, {name}!"\n\`\`\``,
+			comprehension: `Here is a list comprehension:\n\`\`\`python\nsquared = [n**2 for n in range(5)]\nprint(squared)\n\`\`\``,
+			math: `Here's a math example:\n\`\`\`python\nimport math\nprint(math.sqrt(16))\n\`\`\``,
+			file: `This writes to a file:\n\`\`\`python\nwith open("file.txt", "w") as f:\n    f.write("Hello, world!")\n\`\`\``
+		};
+
+		return new Promise((resolve) =>
+			setTimeout(() => {
+				const key = inputValue.trim().toLowerCase();
+				const result = responses[key] || `I didn't understand "${inputValue}". Please try again.`;
+				resolve(result);
+			}, 600)
+		);
+	}
+
+	function extractCodeAndExplanation(response: string): {
+		code: string | null;
+		explanation: string;
+	} {
+		const match = response.match(/```python\n([\s\S]*?)```/);
+
+		const code = match ? match[1].trim() : null;
+		const explanation = response.replace(/```python\n[\s\S]*?```/, "").trim();
+
+		return { code, explanation };
 	}
 </script>
 
 <div class="chat">
-	<div class="chat__messages">
+	<div class="chat__messages" aria-live="polite">
 		{#each messages as m}
 			<div class="chat__message {m.role}">
 				<strong>{m.role === "user" ? "You" : "AI"}:</strong>
 				{m.content}
 			</div>
 		{/each}
+
 		{#if loading}
-			<div class="chat__message ai">AI is thinking...</div>
+			<div class="chat__message assistant">AI is thinking...</div>
 		{/if}
 	</div>
 
-	<form class="chat__form" on:submit|preventDefault={send}>
-		<input bind:value={input} placeholder="Ask something..." />
+	<form class="chat__form" onsubmit={send}>
+		<input type="text" bind:value={input} placeholder="Ask something..." aria-label="User message" autocomplete="off" required />
+
 		<Button type="submit" {loading} text="Send" />
 	</form>
 </div>
