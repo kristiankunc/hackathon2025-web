@@ -84,7 +84,6 @@
 		const code = match ? match[1].trim() : null;
 		const explanation = response.replace(/```python\n[\s\S]*?```\n?/, "").trim();
 
-
 		return { code, explanation };
 	}
 </script>
@@ -93,8 +92,7 @@
 	<div class="chat__messages" aria-live="polite">
 		{#each messages as m}
 			<div class="chat__message {m.role}">
-				<strong>{m.role === "user" ? "You" : "AI"}:</strong>
-				{m.content}
+				<strong>{m.role === "user" ? "You" : "AI"}:</strong>{m.content}
 			</div>
 		{/each}
 
@@ -105,17 +103,17 @@
 
 	<form class="chat__form" onsubmit={send}>
 		<textarea
-		bind:this={textareaEl}
-		bind:value={input}
-		placeholder="Ask something..."
-		aria-label="User message"
-		autocomplete="off"
-		required
-		rows="1"
-		class="chat__textarea"
-		onkeydown={handleKeyDown}
-		oninput={autoResize}
-	></textarea>
+			bind:this={textareaEl}
+			bind:value={input}
+			placeholder="Ask something..."
+			aria-label="User message"
+			autocomplete="off"
+			required
+			rows="1"
+			class="chat__textarea"
+			onkeydown={handleKeyDown}
+			oninput={autoResize}
+		></textarea>
 
 		<Button type="submit" {loading} text="Send" />
 	</form>
