@@ -6,12 +6,12 @@
 		content: string;
 	};
 
-	let { onResponse } = $props();
+	const { onResponse, gameID } = $props();
 
 	let messages = $state<Message[]>([
 		{
 			role: "assistant",
-			content: 'Welcome! Type one of these commands to see an example:\n- "loop"\n- "function"\n- "file"\n- "math"\n- "comprehension"'
+			content: "Hello, how can I assist you today?",
 		}
 	]);
 	let input = $state("");
@@ -19,15 +19,17 @@
 
 	async function send(event: Event) {
 		event.preventDefault();
-		if (!input.trim()) return;
-
 		const content = input.trim();
+
+		if (!content) return;
+
 		messages = [...messages, { role: "user", content }];
 		loading = true;
 		input = "";
 
-		const rawResponse = await simulateModelResponse(content);
-		const { code, explanation } = extractCodeAndExplanation(rawResponse);
+		const rawResponse = await chatgptRequest(content);
+		const rawMessage = (await rawResponse.json()).message;
+		const { code, explanation } = extractCodeAndExplanation(rawMessage);
 
 		if (code) {
 			onResponse(code);
@@ -37,35 +39,30 @@
 		loading = false;
 	}
 
-	async function simulateModelResponse(inputValue: string): Promise<string> {
-		const responses: Record<string, string> = {
-			loop: `Here is a loop example:\n\`\`\`python\nfor i in range(5):\n    print(f"Iteration {i}")\n\`\`\``,
-			function: `Here is a function:\n\`\`\`python\ndef greet(name):\n    return f"Hello, {name}!"\n\`\`\``,
-			comprehension: `Here is a list comprehension:\n\`\`\`python\nsquared = [n**2 for n in range(5)]\nprint(squared)\n\`\`\``,
-			math: `Here's a math example:\n\`\`\`python\nimport math\nprint(math.sqrt(16))\n\`\`\``,
-			file: `This writes to a file:\n\`\`\`python\nwith open("file.txt", "w") as f:\n    f.write("Hello, world!")\n\`\`\``
-		};
+	async function chatgptRequest(inputValue: string) {
+		let response = await fetch("http://localhost:5173/gameselect/" + gameID, {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify({
+				message: inputValue
+			}),
+		});
 
-		return new Promise((resolve) =>
-			setTimeout(() => {
-				const key = inputValue.trim().toLowerCase();
-				const result = responses[key] || `I didn't understand "${inputValue}". Please try again.`;
-				resolve(result);
-			}, 600)
-		);
+		return response;
 	}
 
 	function extractCodeAndExplanation(response: string): {
-		code: string | null;
-		explanation: string;
-	} {
-		const match = response.match(/```python\n([\s\S]*?)```/);
-
-		const code = match ? match[1].trim() : null;
-		const explanation = response.replace(/```python\n[\s\S]*?```/, "").trim();
-
-		return { code, explanation };
+  		code: string | null;
+  		explanation: string;
+		} 
+	{
+  		const match = response.match(/```python\n([\s\S]*?)```/);
+  		const code = match ? match[1].trim() : null;
+  		const explanation = response.replace(/```python\n[\s\S]*?```/, "").trim();
+  		return { code, explanation };
 	}
+
+
 </script>
 
 <div class="chat">
