@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from "$lib/components/ui/button.svelte";
+	import { onMount } from "svelte";
 
 	type Message = {
 		role: "user" | "assistant";
@@ -37,7 +38,26 @@
 
 		messages = [...messages, { role: "assistant", content: explanation }];
 		loading = false;
+		autoResize();
 	}
+
+	let textareaEl: HTMLTextAreaElement | null = null;
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.key === "Enter" && !event.shiftKey) {
+			event.preventDefault();
+			send(event);
+		}
+	}
+
+	function autoResize() {
+		if (textareaEl) {
+			textareaEl.style.height = "auto";
+			textareaEl.style.height = textareaEl.scrollHeight + "px";
+		}
+	}
+
+	onMount(() => autoResize());
 
 	async function chatgptRequest(inputValue: string) {
 		let response = await fetch("http://localhost:5173/gameselect/" + gameID, {
@@ -52,14 +72,15 @@
 	}
 
 	function extractCodeAndExplanation(response: string): {
-  		code: string | null;
-  		explanation: string;
-		} 
-	{
-  		const match = response.match(/```python\n([\s\S]*?)```/);
-  		const code = match ? match[1].trim() : null;
-  		const explanation = response.replace(/```python\n[\s\S]*?```/, "").trim();
-  		return { code, explanation };
+		code: string | null;
+		explanation: string;
+	} {
+		const match = response.match(/```python\n([\s\S]*?)```/);
+
+		const code = match ? match[1].trim() : null;
+		const explanation = response.replace(/```python\n[\s\S]*?```/, "").trim();
+
+		return { code, explanation };
 	}
 
 
@@ -69,8 +90,7 @@
 	<div class="chat__messages" aria-live="polite">
 		{#each messages as m}
 			<div class="chat__message {m.role}">
-				<strong>{m.role === "user" ? "You" : "AI"}:</strong>
-				{m.content}
+				<strong>{m.role === "user" ? "You" : "AI"}:</strong>{m.content}
 			</div>
 		{/each}
 
@@ -80,7 +100,18 @@
 	</div>
 
 	<form class="chat__form" onsubmit={send}>
-		<input type="text" bind:value={input} placeholder="Ask something..." aria-label="User message" autocomplete="off" required />
+		<textarea
+			bind:this={textareaEl}
+			bind:value={input}
+			placeholder="Ask something..."
+			aria-label="User message"
+			autocomplete="off"
+			required
+			rows="1"
+			class="chat__textarea"
+			onkeydown={handleKeyDown}
+			oninput={autoResize}
+		></textarea>
 
 		<Button type="submit" {loading} text="Send" />
 	</form>
