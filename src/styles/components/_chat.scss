@@ -43,7 +43,7 @@
 		justify-content: space-between;
 		gap: 0.75rem;
 
-		input {
+		textarea {
 			width: 100%;
 			padding: 0.625rem 1rem;
 			line-height: 1.5;
@@ -51,6 +51,7 @@
 			color: $text-color;
 			border: none;
 			border-radius: 0.25rem;
+			resize: none;
 
 			&:focus {
 				outline: none;

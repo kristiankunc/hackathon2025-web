@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from "$lib/components/ui/button.svelte";
+	import { onMount } from "svelte";
 
 	type Message = {
 		role: "user" | "assistant";
@@ -35,7 +36,26 @@
 
 		messages = [...messages, { role: "assistant", content: explanation }];
 		loading = false;
+		autoResize();
 	}
+
+	let textareaEl: HTMLTextAreaElement | null = null;
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.key === "Enter" && !event.shiftKey) {
+			event.preventDefault();
+			send(event);
+		}
+	}
+
+	function autoResize() {
+		if (textareaEl) {
+			textareaEl.style.height = "auto";
+			textareaEl.style.height = textareaEl.scrollHeight + "px";
+		}
+	}
+
+	onMount(() => autoResize());
 
 	async function simulateModelResponse(inputValue: string): Promise<string> {
 		const responses: Record<string, string> = {
@@ -62,7 +82,8 @@
 		const match = response.match(/```python\n([\s\S]*?)```/);
 
 		const code = match ? match[1].trim() : null;
-		const explanation = response.replace(/```python\n[\s\S]*?```/, "").trim();
+		const explanation = response.replace(/```python\n[\s\S]*?```\n?/, "").trim();
+
 
 		return { code, explanation };
 	}
@@ -83,7 +104,18 @@
 	</div>
 
 	<form class="chat__form" onsubmit={send}>
-		<input type="text" bind:value={input} placeholder="Ask something..." aria-label="User message" autocomplete="off" required />
+		<textarea
+		bind:this={textareaEl}
+		bind:value={input}
+		placeholder="Ask something..."
+		aria-label="User message"
+		autocomplete="off"
+		required
+		rows="1"
+		class="chat__textarea"
+		onkeydown={handleKeyDown}
+		oninput={autoResize}
+	></textarea>
 
 		<Button type="submit" {loading} text="Send" />
 	</form>
