@@ -17,7 +17,7 @@
 </script>
 
 <PanelContainer>
-	<div slot="left"><button on:click={() => (console.log("Game interactions..."))}>Run Code</button></div>
+	<div slot="left"><button onclick={() => (console.log("Game interactions..."))}>Run Code</button></div>
 	<div slot="middle">
 		{#key code}
 			<CodeEditor {code} />

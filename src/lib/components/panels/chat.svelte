@@ -29,8 +29,7 @@
 		input = "";
 
 		const rawResponse = await chatgptRequest(content);
-		const rawMessage = (await rawResponse.json()).message;
-		const { code, explanation } = extractCodeAndExplanation(rawMessage);
+		const { code, explanation } = (await rawResponse.json());
 
 		if (code) {
 			onResponse(code);
@@ -70,19 +69,6 @@
 
 		return response;
 	}
-
-	function extractCodeAndExplanation(response: string): {
-		code: string | null;
-		explanation: string;
-	} {
-		const match = response.match(/```python\n([\s\S]*?)```/);
-
-		const code = match ? match[1].trim() : null;
-		const explanation = response.replace(/```python\n[\s\S]*?```/, "").trim();
-
-		return { code, explanation };
-	}
-
 
 </script>
 
