@@ -3,8 +3,6 @@
 	import CodeEditor from "$lib/components/panels/codeEditor.svelte";
 	import Chat from "$lib/components/panels/chat.svelte";
 
-	let data = $props();
-
 	let code = $state("");
 
 	function handleResponse(message: string) {
@@ -24,6 +22,6 @@
 		{/key}
 	</div>
 	<div slot="right">
-		<Chat onResponse={handleResponse} gameID={data.id} />
+		<Chat onResponse={handleResponse} gameID={document.URL.charAt(document.URL.length - 1)} />
 	</div>
 </PanelContainer>

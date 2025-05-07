@@ -37,7 +37,7 @@ export let POST = async ({ request }) => {
 
 	const { code, explanation } = extractCodeAndExplanation(response.output_text);
 
-	console.log(request.url[-1]);
+    
 
 	return new Response(JSON.stringify({ code, explanation }), {
 		headers: { "Content-Type": "application/json" }
