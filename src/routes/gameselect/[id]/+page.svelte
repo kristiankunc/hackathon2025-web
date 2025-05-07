@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import PanelContainer from "$lib/components/panels/panelContainer.svelte";
 	import CodeEditor from "$lib/components/panels/codeEditor.svelte";
 	import Chat from "$lib/components/panels/chat.svelte";
