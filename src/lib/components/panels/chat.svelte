@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from "$lib/components/button.svelte";
+	import Button from "$lib/components/ui/button.svelte";
 
 	let messages: { role: string; content: string }[] = [{ role: "system", content: "You are a helpful assistant." }];
 
