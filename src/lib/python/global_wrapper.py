@@ -29,6 +29,34 @@ def unity_call(func):
         return func(*_args, **_kwargs)
     return wrapper
 
+def unity_await(variable_name):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            async def inner():
+                print("Waiting for Unity variable: ", variable_name)
+                current_timestamp = time.time()
+                data = None
+
+                while True:
+                    data = DATA_EXCHANGE_ELEMENT.textContent
+                    print("Data received from Unity:", data)
+                    if data:
+                        data = json.loads(data)
+                        if data["updatedAt"] > current_timestamp:
+                            break
+
+                    await asyncio.sleep(0.5)
+
+                print("Data received from Unity:", data)
+                return await func(*args, **kwargs)
+
+            return asyncio.create_task(inner())
+
+        return wrapper
+    return decorator
+
+
+
 
 @unity_call
 def forward():
@@ -46,21 +74,9 @@ def left():
 def right():
 	pass
 
-async def wait_for_unity():
-    current_timestamp = time.time()
-    data = None
-
-    while True:
-        data = DATA_EXCHANGE_ELEMENT.textContent
-        print("Data received from Unity:", data)
-        if data:
-            data = json.loads(data)
-            if data["updatedAt"] > current_timestamp:
-                break
-
-        await asyncio.sleep(0.5)
-
-    print("Data received from Unity:", data)
+@unity_await("test")
+def wait_for_test():
+    print("await completed")
 
 def print(content, *args, **ignored_kwargs):
     combined_content = str(content) + ''.join(map(str, args))
