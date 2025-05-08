@@ -7,7 +7,7 @@
 		content: string;
 	};
 
-	const { onResponse, gameID } = $props();
+	const { onResponse } = $props();
 
 	let messages = $state<Message[]>([
 		{
@@ -59,11 +59,12 @@
 	onMount(() => autoResize());
 
 	async function chatgptRequest(inputValue: string) {
-		let response = await fetch("/api/openai" + gameID, {
+		let response = await fetch("/api/openai/", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
-				message: inputValue
+				message: inputValue,
+				gameID: document.location.pathname.split("/")[2]
 			})
 		});
 

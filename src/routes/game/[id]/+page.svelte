@@ -28,6 +28,6 @@
 		{/key}
 	</div>
 	<div slot="right">
-		<Chat onResponse={handleResponse} gameID={data.gameID} />
+		<Chat onResponse={handleResponse}/>
 	</div>
 </PanelContainer>

@@ -1,4 +1,3 @@
-import { prisma } from "$lib/prisma";
 import OpenAI from "openai";
 import { OPENAI_API_KEY } from "$env/static/private";
 
@@ -19,7 +18,8 @@ function extractCodeAndExplanation(response: string): {
 }
 
 export let POST = async ({ request }) => {
-	let body = await request.json();
+	const body = await request.json();
+	const gameID = body.gameId;
 
 	const response = await client.responses.create({
 		model: "gpt-4.1",
@@ -36,8 +36,6 @@ export let POST = async ({ request }) => {
 	});
 
 	const { code, explanation } = extractCodeAndExplanation(response.output_text);
-
-    
 
 	return new Response(JSON.stringify({ code, explanation }), {
 		headers: { "Content-Type": "application/json" }
