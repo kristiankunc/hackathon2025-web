@@ -37,7 +37,7 @@
 
 		messages = [...messages, { role: "assistant", content: explanation }];
 		loading = false;
-		autoResize();
+		autoResize(); 
 	}
 
 	let textareaEl: HTMLTextAreaElement | null = null;
