@@ -29,6 +29,7 @@ def print(content, *args):
 def run_code(event):
 	OUTPUT_ELEMENT.textContent = ""
 	ERROR_ELEMENT.textContent = ""
+	call_stack.clear()
 	try:
 		exec(CODE_ELEMENT.textContent)
 	except Exception as e:
