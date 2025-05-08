@@ -11,7 +11,10 @@
 	<div class="navbar__pages">
 		<div class="navbar__title">{appName}</div>
 		<nav class="navbar__links">
-			<a href="/gameselect">Game Select</a>
+			<a href="/">Home</a>
+			{#if $page.data.user}
+				<a href="/gameselect">Game Select</a>
+			{/if}
 		</nav>
 	</div>
 	<div class="navbar__auth">
