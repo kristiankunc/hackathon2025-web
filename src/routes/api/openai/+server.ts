@@ -1,9 +1,8 @@
-import { prisma } from "$lib/prisma";
+import { env } from "$env/dynamic/private";
 import OpenAI from "openai";
-import { OPENAI_API_KEY } from "$env/static/private";
 
 const client = new OpenAI({
-	apiKey: OPENAI_API_KEY
+	apiKey: env.OPENAI_API_KEY
 });
 
 function extractCodeAndExplanation(response: string): {
@@ -18,8 +17,13 @@ function extractCodeAndExplanation(response: string): {
 	return { code, explanation };
 }
 
-export let POST = async ({ request }) => {
-	let body = await request.json();
+export let POST = async ({ request, locals }) => {
+	if (!locals.user) {
+		return new Response("Unauthorized", { status: 401 });
+	}
+
+	const body = await request.json();
+	const gameID = body.gameId;
 
 	const response = await client.responses.create({
 		model: "gpt-4.1",
@@ -36,8 +40,6 @@ export let POST = async ({ request }) => {
 	});
 
 	const { code, explanation } = extractCodeAndExplanation(response.output_text);
-
-    
 
 	return new Response(JSON.stringify({ code, explanation }), {
 		headers: { "Content-Type": "application/json" }

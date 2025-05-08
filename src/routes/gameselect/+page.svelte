@@ -90,3 +90,4 @@
 		{/if}
 	</div>
 </div>
+<!-- <Table columns={["Level", "Name", "Score"]} rows={[{ Level: 1, Name: "Level 1", Score: "95%", link: `/game/${1}` }]} /> -->
