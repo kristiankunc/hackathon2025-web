@@ -1,8 +1,8 @@
+import { env } from "$env/dynamic/private";
 import OpenAI from "openai";
-import { OPENAI_API_KEY } from "$env/static/private";
 
 const client = new OpenAI({
-	apiKey: OPENAI_API_KEY
+	apiKey: env.OPENAI_API_KEY
 });
 
 function extractCodeAndExplanation(response: string): {
