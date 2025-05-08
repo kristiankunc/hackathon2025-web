@@ -1,0 +1,79 @@
+@use "../abstract" as *;
+
+.map-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: content-height();
+}
+
+.map-container {
+	position: relative;
+	width: 1000px;
+	height: 400px;
+}
+
+.connections {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.line {
+	stroke: #999;
+	stroke-width: 3;
+	stroke-dasharray: 6, 4;
+}
+
+.node {
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	position: absolute;
+	background: #ccc;
+	border-radius: 50%;
+	align-items: center;
+	font-weight: bold;
+	cursor: pointer;
+	transition:
+		transform 0.2s ease,
+		background 0.2s ease;
+	border: 2px solid #888;
+
+	&.completed {
+		background: #4caf50;
+		color: white;
+		border-color: #388e3c;
+	}
+
+	&.unlocked {
+		background: #ffeb3b;
+		border-color: #fbc02d;
+	}
+
+	&.locked {
+		background: #bdbdbd;
+		color: #757575;
+		cursor: not-allowed;
+	}
+
+	&:hover {
+		transform: scale(1.1);
+	}
+}
+
+.modal {
+	position: absolute;
+	background: $background-color;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 0.5rem 1rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	font-size: 0.9rem;
+	transform: translate(-50%, 0);
+	pointer-events: none;
+	white-space: nowrap;
+	z-index: 10;
+	transition: opacity 0.2s ease;
+}
