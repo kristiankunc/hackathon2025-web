@@ -29,10 +29,6 @@ export let POST = async ({ request, locals }) => {
 		model: "gpt-4.1",
 		input: [
 			{
-				role: "developer",
-				content: "Talk like a pirate."
-			},
-			{
 				role: "user",
 				content: body.message
 			}

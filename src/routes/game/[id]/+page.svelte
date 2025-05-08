@@ -18,21 +18,48 @@
 </script>
 
 <svelte:head>
-	<link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
-    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
-
+	<link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
+	<script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
 </svelte:head>
 
+<!-- prettier-ignore -->
 <py-script>
 from pyodide.ffi import create_proxy
 import js
 
+CODE_ELEMENT = js.document.getElementById("python-code")
+OUTPUT_ELEMENT = js.document.getElementById("python-output")
+ERROR_ELEMENT = js.document.getElementById("python-error")
+
+call_stack = []
+
+def forward():
+	call_stack.append("forward")
+
+def backward():
+	call_stack.append("backward")
+
+def left():
+	call_stack.append("left")
+
+def right():
+	call_stack.append("right")
+
+def print(content, *args):
+	current_output = OUTPUT_ELEMENT.textContent
+	if current_output:
+		OUTPUT_ELEMENT.textContent = current_output + str(content) + "\n"
+	else:
+		OUTPUT_ELEMENT.textContent = str(content) + "\n"
+
 def run_code(event):
-	code = js.document.getElementById("python-code").textContent
+	OUTPUT_ELEMENT.textContent = ""
+	ERROR_ELEMENT.textContent = ""
 	try:
-		exec(code)
+		exec(CODE_ELEMENT.textContent)
 	except Exception as e:
-		print("Error: " + e)
+		js.document.getElementById("python-error").textContent = e
+
 
 run_code_proxy = create_proxy(run_code)
 js.document.getElementById("run-code-button").addEventListener("click", run_code_proxy)
@@ -47,9 +74,8 @@ js.document.getElementById("run-code-button").addEventListener("click", run_code
 		{#key code}
 			<CodeEditor {code} />
 		{/key}
-		<pre id="python-code" style="display: none;">{code}</pre>
 	</div>
 	<div slot="right">
-		<Chat onResponse={handleResponse}/>
+		<Chat onResponse={handleResponse} />
 	</div>
 </PanelContainer>
