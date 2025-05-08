@@ -32,16 +32,13 @@ export let POST = async ({ request, locals }) => {
 				role: "developer",
 				content: "Talk like a pirate."
 			},
-			{
-				role: "user",
-				content: body.message
-			}
+			...body.messages
 		]
 	});
 
 	const { code, explanation } = extractCodeAndExplanation(response.output_text);
 
-	return new Response(JSON.stringify({ code, explanation }), {
+	return new Response(JSON.stringify({ code, explanation, completeOutput: response.output_text }), {
 		headers: { "Content-Type": "application/json" }
 	});
 };
