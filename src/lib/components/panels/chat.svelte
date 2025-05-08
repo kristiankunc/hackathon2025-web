@@ -59,7 +59,7 @@
 	onMount(() => autoResize());
 
 	async function chatgptRequest(inputValue: string) {
-		let response = await fetch("/gameselect/" + gameID, {
+		let response = await fetch("/api/openai" + gameID, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
