@@ -26,36 +26,42 @@ exchange format:
 def unity_call(func):
     def wrapper(*_args, **_kwargs):
         print("Calling Unity function: ", func.__name__)
-        return func(*_args, **_kwargs)
     return wrapper
 
 def unity_await(variable_name):
     def decorator(func):
-        def wrapper(*args, **kwargs):
-            async def inner():
-                print("Waiting for Unity variable: ", variable_name)
-                current_timestamp = time.time()
-                data = None
+        async def wrapper(*args, **kwargs):
+            current_timestamp = int(time.time())
+            data = None
 
-                while True:
-                    data = DATA_EXCHANGE_ELEMENT.textContent
-                    print("Data received from Unity:", data)
-                    if data:
-                        data = json.loads(data)
-                        if data["updatedAt"] > current_timestamp:
-                            break
+            while True:
+                data = DATA_EXCHANGE_ELEMENT.textContent
+                if data:
+                    data = json.loads(data)
+                    if data["updatedAt"] > current_timestamp:
+                        break
 
-                    await asyncio.sleep(0.5)
+                await asyncio.sleep(0.5)
 
-                print("Data received from Unity:", data)
-                return await func(*args, **kwargs)
+            if data["data"]["name"] != variable_name:
+                raise ValueError(f"Variable name mismatch: expected '{variable_name}', got '{data['data']['name']}'")
+            
+            match data["data"]["type"]:
+                case "string":
+                    value = str(data["data"]["value"])
+                case "int":
+                    value = int(data["data"]["value"])
+                case "float":
+                    value = float(data["data"]["value"])
+                case "bool":
+                    value = bool(data["data"]["value"])
+                case _:
+                    raise ValueError(f"Unsupported type: {data['data']['type']}")
 
-            return asyncio.create_task(inner())
+            return value
 
         return wrapper
     return decorator
-
-
 
 
 @unity_call
@@ -64,18 +70,18 @@ def forward():
 
 @unity_call
 def backward():
-	pass
+    pass
 
 @unity_call
 def left():
-	pass
+    pass
 
 @unity_call
 def right():
-	pass
+    pass
 
 @unity_await("test")
-def wait_for_test():
+async def wait_for_test():
     print("await completed")
 
 def print(content, *args, **ignored_kwargs):
