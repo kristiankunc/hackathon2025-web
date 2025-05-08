@@ -5,13 +5,12 @@ import type { Handle } from "@sveltejs/kit";
 const setLocals: Handle = async ({ event, resolve }) => {
 	const authSession = await event.locals.auth();
 
-	const domain = event.url.toString().split("/").at(2);
+	const endpoint = event.url.pathname.split("/").slice(1).join("/");
 
-	if (!authSession && event.url.href != "http://" + domain + "/" && event.url.href != "http://" + domain + "/auth/signin/") {
+	if (!authSession && endpoint !== "" && !endpoint.startsWith("auth")) {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				// Location: '/auth/signin'
 				Location: "/"
 			}
 		});
