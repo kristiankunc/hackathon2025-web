@@ -30,3 +30,5 @@
 <p id="python-error"></p>
 
 <pre id="python-code" style="display: none;">{code}</pre>
+<!-- json data holder -->
+<pre id="python-data-exchange" style="display: none;"></pre>
