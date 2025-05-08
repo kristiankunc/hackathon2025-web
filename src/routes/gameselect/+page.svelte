@@ -37,7 +37,7 @@
 
 	function handleClick(level: Level) {
 		if (level.status !== "locked") {
-			goto(`/gameselect/${level.id}`);
+			goto(`/game/${level.id}`);
 		}
 	}
 
