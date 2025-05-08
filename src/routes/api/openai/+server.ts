@@ -17,7 +17,11 @@ function extractCodeAndExplanation(response: string): {
 	return { code, explanation };
 }
 
-export let POST = async ({ request }) => {
+export let POST = async ({ request, locals }) => {
+	if (!locals.user) {
+		return new Response("Unauthorized", { status: 401 });
+	}
+
 	const body = await request.json();
 	const gameID = body.gameId;
 
