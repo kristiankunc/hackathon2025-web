@@ -7,7 +7,7 @@
 	import { parsePythonFunctions } from "$lib/python/pydoc-parser";
 	import { marked } from "marked";
 	import { onMount } from "svelte";
-	import { sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
+	import { sendDataToPython, sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
 
 	let data = $props();
 
@@ -36,6 +36,24 @@
 			case "ready":
 				console.log("Unity is ready");
 				isUnityReady = true;
+				break;
+
+			case "setData":
+				const variableName = unityData.args.variableName;
+				const variableValue = unityData.args.variableValue;
+				const variableType = unityData.args.variableType;
+
+				if (!variableName || !variableValue || !variableType) {
+					console.error("Missing variable name, value or type");
+					return;
+				}
+
+				sendDataToPython("python-data-exchange", {
+					name: variableName,
+					type: variableType,
+					value: variableValue
+				});
+
 				break;
 
 			case "levelPass":
