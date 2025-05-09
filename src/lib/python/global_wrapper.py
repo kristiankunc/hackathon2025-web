@@ -65,23 +65,37 @@ def unity_await(variable_name):
 
 
 @unity_call
-def forward():
-    pass
-
-@unity_call
-def backward():
+def forward(steps: int = 1):
+    """
+    Makes the character move forward n steps.
+    
+    Arguments:
+        steps (int): The number of steps to move forward. Defaults to 1.
+    """
     pass
 
 @unity_call
 def left():
+    """
+    Makes the character turn left.
+    """
     pass
 
 @unity_call
 def right():
+    """
+    Makes the character turn right.
+    """
     pass
 
 @unity_await("test")
 async def wait_for_test():
+    """
+    Waits for the variable 'test' to be updated in Unity.
+
+    Returns:
+        str: The updated value of 'test'.
+    """
     print("await completed")
 
 def print(content, *args, **ignored_kwargs):

@@ -3,19 +3,19 @@
 	import CodeEditor from "$lib/components/panels/codeEditor.svelte";
 	import Chat from "$lib/components/panels/chat.svelte";
 	import { PUBLIC_UNITY_INSTANCE_URL } from "$env/static/public";
-	import python_wrapper from "$lib/python/global_wrapper.py?raw";
+	import pythonWrapper from "$lib/python/global_wrapper.py?raw";
+	import { parsePythonFunctions } from "$lib/python/pydoc-parser";
+	import { marked } from "marked";
 
 	let data = $props();
 
 	let code = $state("");
 
 	function handleResponse(message: string) {
-		// const match = message.match(/```python\n([\s\S]*?)```/);
-		// if (match) {
-		// code = match[1];
-		// }
 		code = message;
 	}
+
+	const formattedDocstring = parsePythonFunctions(pythonWrapper);
 </script>
 
 <svelte:head>
@@ -25,7 +25,7 @@
 
 <!-- prettier-ignore -->
 <py-script style="display: none;">
-{python_wrapper}
+{pythonWrapper}
 </py-script>
 
 <PanelContainer>
@@ -34,6 +34,11 @@
 		<iframe src={PUBLIC_UNITY_INSTANCE_URL} width="100%" height="500px" title="Hra"></iframe>
 	</div>
 	<div slot="middle">
+		<!--
+		<div>
+			{@html marked(formattedDocstring)}
+		</div>
+		-->
 		{#key code}
 			<CodeEditor {code} />
 		{/key}
