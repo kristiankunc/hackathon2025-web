@@ -75,14 +75,14 @@ def forward(steps: int = 1):
     pass
 
 @unity_call
-def left():
+def turn_left():
     """
     Makes the character turn left.
     """
     pass
 
 @unity_call
-def right():
+def turn_right():
     """
     Makes the character turn right.
     """
