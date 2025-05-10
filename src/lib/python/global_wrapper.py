@@ -2,7 +2,7 @@ import asyncio
 import time
 import json
 
-from pyodide.ffi import create_proxy # type: ignore
+from pyodide.ffi import create_proxy, to_js # type: ignore
 import js # type: ignore
 
 
@@ -25,8 +25,24 @@ exchange format:
 
 def unity_call(func):
     def wrapper(*_args, **_kwargs):
-        print("Calling Unity function: ", func.__name__)
+        func_defaults = func.__defaults__ or ()
+        func_arg_names = func.__code__.co_varnames[:func.__code__.co_argcount]
+        default_args = dict(zip(func_arg_names[-len(func_defaults):], func_defaults))
+        combined_args = {**default_args, **_kwargs, **dict(zip(func_arg_names, _args))}
+
+        message = {
+            "action": func.__name__,
+            "args": combined_args
+        }
+
+        message_json = json.dumps(message)
+
+        js.globalThis.sendActionToUnity(js.structuredClone(js.JSON.parse(message_json)))
+
     return wrapper
+
+
+
 
 def unity_await(variable_name):
     def decorator(func):
@@ -65,7 +81,7 @@ def unity_await(variable_name):
 
 
 @unity_call
-def forward(steps: int = 1):
+def forward(distance: int = 1, speed: int = 1):
     """
     Makes the character move forward n steps.
     

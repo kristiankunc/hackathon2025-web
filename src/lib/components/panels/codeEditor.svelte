@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { sendDataToPython } from "$lib/iframe-messanger";
 	import Highlight, { LineNumbers } from "svelte-highlight";
 	import python from "svelte-highlight/languages/python";
 	import snazzy from "svelte-highlight/styles/snazzy";
@@ -23,11 +24,12 @@
 
 	function updateUnityMessage() {
 		const parsedMessage = JSON.parse(messageContent);
-		const wrappedMessage = {
-			updatedAt: Math.floor(Date.now() / 1000),
-			data: parsedMessage
-		};
-		messageElement!.innerHTML = JSON.stringify(wrappedMessage, null, 2);
+
+		sendDataToPython("python-data-exchange", {
+			name: parsedMessage.name,
+			type: parsedMessage.type,
+			value: parsedMessage.value
+		});
 	}
 </script>
 
