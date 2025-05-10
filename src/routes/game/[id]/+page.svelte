@@ -9,11 +9,25 @@
 	import { onMount } from "svelte";
 	import { sendDataToPython, sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
 
-	let data = $props();
-
+	let { data } = $props();
 	let code = $state("");
 	let isUnityReady = $state(false);
 	let gameIframe: HTMLIFrameElement | undefined = undefined;
+	let pyodide: any = null;
+	let isPyodideReady = $state(false);
+
+	// Asynchronous function to load Pyodide
+	async function loadPyodideInstance() {
+		try {
+			// @ts-ignore
+			pyodide = await window.loadPyodide();
+			isPyodideReady = true;
+			console.log("Pyodide is ready");
+		} catch (error) {
+			console.error("Error loading Pyodide:", error);
+			isPyodideReady = false;
+		}
+	}
 
 	function handleResponse(message: string) {
 		code = message;
@@ -32,13 +46,16 @@
 	}
 
 	async function handleUnityMessage(unityData: UnityMessage) {
-		switch (data.action) {
+		console.log("Unity message received", unityData);
+
+		switch (unityData.action) {
 			case "ready":
 				console.log("Unity is ready");
 				isUnityReady = true;
 				break;
 
 			case "setData":
+				console.log("Setting data in Unity");
 				const variableName = unityData.args.variableName;
 				const variableValue = unityData.args.variableValue;
 				const variableType = unityData.args.variableType;
@@ -57,16 +74,34 @@
 				break;
 
 			case "levelPass":
-				const gameId = data.gameId;
+				const gameId = data.levelId;
 
 			default:
-				console.error("Unknown action from Unity", data);
+				console.error("Unknown action from Unity", unityData);
 				break;
 		}
 	}
 
+	function sendActionToUnity(message: UnityMessage) {
+		console.log("Sending action to Unity", message);
+		sendMessageToUnity(gameIframe!, message);
+	}
+
 	onMount(async () => {
+		// @ts-ignore
+		window.sendActionToUnity = sendActionToUnity;
+		// @ts-ignore
+		globalThis.sendActionToUnity = sendActionToUnity;
+
+		console.log(globalThis);
+
 		window.addEventListener("message", onIframeMessage);
+
+		await loadPyodideInstance();
+
+		if (isPyodideReady) {
+			pyodide.runPython(pythonWrapper);
+		}
 
 		if (!isUnityReady) {
 			await new Promise<void>((resolve) => {
@@ -83,7 +118,9 @@
 
 		sendMessageToUnity(gameIframe!, {
 			action: "setLevel",
-			args: {}
+			args: {
+				levelId: data.levelId
+			}
 		});
 
 		return new Promise(() => {
@@ -96,13 +133,9 @@
 
 <svelte:head>
 	<link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
-	<script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/pyodide@0.21.3/pyodide.js"></script>
+	<script src="https://pyscript.net/releases/2025.3.1/core.js" type="module"></script>
 </svelte:head>
-
-<!-- prettier-ignore -->
-<py-script style="display: none;">
-{pythonWrapper}
-</py-script>
 
 <PanelContainer>
 	<div slot="left">
@@ -110,11 +143,6 @@
 		<iframe src={PUBLIC_UNITY_INSTANCE_URL} bind:this={gameIframe} width="100%" height="500px" title="Hra"></iframe>
 	</div>
 	<div slot="middle">
-		<!--
-		<div>
-			{@html marked(formattedDocstring)}
-		</div>
-		-->
 		{#key code}
 			<CodeEditor {code} />
 		{/key}

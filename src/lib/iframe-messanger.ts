@@ -14,13 +14,15 @@ export interface PythonMessageData {
 	value: any;
 }
 
-export function sendMessageToUnity(iframe: HTMLIFrameElement, data: UnityMessage) {
+export function sendMessageToUnity(iframe: HTMLIFrameElement, messageData: UnityMessage) {
 	if (!iframe?.contentWindow) return;
+
+	console.log("Sending message to Unity:", messageData);
 
 	iframe.contentWindow.postMessage(
 		{
 			type: "jsToUnity",
-			data: data
+			data: messageData
 		},
 		"*"
 	);
