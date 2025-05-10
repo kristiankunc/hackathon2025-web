@@ -15,27 +15,39 @@
 			content: "Hello, how can I assist you today?"
 		}
 	]);
+
+	let wholeMessages = $state<Message[]>([
+		{
+			role: "assistant",
+			content: "Hello, how can I assist you today?"
+		}
+	]);
+
 	let input = $state("");
 	let loading = $state(false);
 
 	async function send(event: Event) {
 		event.preventDefault();
-		const content = input.trim();
+		const userPrompt = input.trim();
 
-		if (!content) return;
+		if (!userPrompt) return;
 
-		messages = [...messages, { role: "user", content }];
+		messages = [...messages, { role: "user", content: userPrompt }];
+		wholeMessages = [...wholeMessages, { role: "user", content: userPrompt }];
+
 		loading = true;
 		input = "";
 
-		const rawResponse = await chatgptRequest(content);
-		const { code, explanation } = await rawResponse.json();
+		const rawResponse = await chatgptRequest();
+		const { code, explanation, completeOutput } = await rawResponse.json();
 
 		if (code) {
 			onResponse(code);
 		}
 
 		messages = [...messages, { role: "assistant", content: explanation }];
+		wholeMessages = [...wholeMessages, { role: "assistant", content: completeOutput }];
+
 		loading = false;
 		autoResize(); 
 	}
@@ -58,12 +70,12 @@
 
 	onMount(() => autoResize());
 
-	async function chatgptRequest(inputValue: string) {
+	async function chatgptRequest() {
 		let response = await fetch("/api/openai/", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
-				message: inputValue,
+				messages: wholeMessages,
 				gameID: document.location.pathname.split("/")[2]
 			})
 		});

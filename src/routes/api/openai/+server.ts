@@ -29,15 +29,16 @@ export let POST = async ({ request, locals }) => {
 		model: "gpt-4.1",
 		input: [
 			{
-				role: "user",
-				content: body.message
-			}
+				role: "developer",
+				content: "Talk like a pirate."
+			},
+			...body.messages
 		]
 	});
 
 	const { code, explanation } = extractCodeAndExplanation(response.output_text);
 
-	return new Response(JSON.stringify({ code, explanation }), {
+	return new Response(JSON.stringify({ code, explanation, completeOutput: response.output_text }), {
 		headers: { "Content-Type": "application/json" }
 	});
 };
