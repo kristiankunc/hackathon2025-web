@@ -1,5 +1,7 @@
 import { env } from "$env/dynamic/private";
 import OpenAI from "openai";
+import { parsePythonFunctions } from "$lib/python/pydoc-parser";
+import getLevelCode from "$lib/python/get-level-code.js";
 
 const client = new OpenAI({
 	apiKey: env.OPENAI_API_KEY
@@ -23,14 +25,19 @@ export let POST = async ({ request, locals }) => {
 	}
 
 	const body = await request.json();
-	const gameID = body.gameId;
+	const levelId = body.levelId;
+
+	const levelCode = await getLevelCode(levelId);
+	const codeMD = parsePythonFunctions(levelCode);
+
+	console.log("Markdown Code:", codeMD);
 
 	const response = await client.responses.create({
 		model: "gpt-4.1",
 		input: [
 			{
 				role: "developer",
-				content: "Talk like a pirate."
+				content: codeMD
 			},
 			...body.messages
 		]

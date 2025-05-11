@@ -4,7 +4,7 @@
 	import Chat from "$lib/components/panels/chat.svelte";
 	import { PUBLIC_UNITY_INSTANCE_URL } from "$env/static/public";
 	import pythonWrapper from "$lib/python/global_wrapper.py?raw";
-	import { parsePythonFunctions } from "$lib/python/pydoc-parser";
+	import getLevelCode from "$lib/python/get-level-code.js";
 	import { onMount } from "svelte";
 	import { sendDataToPython, sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
 
@@ -14,7 +14,6 @@
 	let gameIframe: HTMLIFrameElement | undefined = undefined;
 	let pyodide: any = null;
 	let isPyodideReady = $state(false);
-	const levelFiles = import.meta.glob("$lib/python/levels/level*.py", { as: "raw" });
 
 	// Asynchronous function to load Pyodide
 	async function loadPyodideInstance() {
@@ -129,15 +128,8 @@
 		if (isPyodideReady) {
 			pyodide.runPython(pythonWrapper);
 
-			const levelPath = `/src/lib/python/levels/level${data.levelId}.py`;
-			const loadLevel = levelFiles[levelPath];
-			console.log("Level files ", levelFiles);
-			if (loadLevel) {
-				const levelCode = await loadLevel();
-				pyodide.runPython(levelCode);
-			} else {
-				console.error(`Level script for levelId=${data.levelId} not found.`);
-			}
+			const levelCode = await getLevelCode(data.levelId)
+			pyodide.runPython(levelCode);
 		}
 
 		if (!isUnityReady) {

@@ -76,7 +76,7 @@
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				messages: wholeMessages,
-				gameID: document.location.pathname.split("/")[2]
+				levelId: document.location.pathname.split("/")[2]
 			})
 		});
 
