@@ -95,13 +95,15 @@ async def run_code(event):
     OUTPUT_ELEMENT.textContent = ""
     ERROR_ELEMENT.textContent = ""
 
+    await asyncio.sleep(1)  # pray this is enough time unity reload 🙏🙏🙏
+    user_code = CODE_ELEMENT.textContent
+    user_code = user_code.replace("\t", "    ")
+    indented_code = "\n".join("    " + line for line in user_code.splitlines())
+    full_code = f"async def __user_code__():\n{indented_code}"
+        
+    full_code = full_code.replace("time.sleep", "await asyncio.sleep")
 
     try:
-        await asyncio.sleep(1)  # pray this is enough time unity reload 🙏🙏🙏
-        user_code = CODE_ELEMENT.textContent
-        user_code = user_code.replace("\t", "    ")
-        indented_code = "\n".join("    " + line for line in user_code.splitlines())
-        full_code = f"async def __user_code__():\n{indented_code}"
 
         exec(full_code, globals())
         await globals()["__user_code__"]()
