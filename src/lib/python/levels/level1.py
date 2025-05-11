@@ -6,6 +6,7 @@ def forward(distance: int = 1, speed: int = 1):
     Arguments:
         steps (int): The number of steps to move forward. Defaults to 1.
     """
+    print(f"Moving forward {distance} steps at speed {speed}")
     pass
 
 @unity_call # type: ignore
