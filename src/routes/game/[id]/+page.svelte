@@ -5,7 +5,6 @@
 	import { PUBLIC_UNITY_INSTANCE_URL } from "$env/static/public";
 	import pythonWrapper from "$lib/python/global_wrapper.py?raw";
 	import { parsePythonFunctions } from "$lib/python/pydoc-parser";
-	import { marked } from "marked";
 	import { onMount } from "svelte";
 	import { sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
 
@@ -39,11 +38,33 @@
 				break;
 
 			case "levelPass":
-				const gameId = data.gameId;
+				handleLevelPass(data.gameId);
+				break;
 
 			default:
 				console.error("Unknown action from Unity", data);
 				break;
+		}
+	}
+
+	function handleLevelPass(gameId: number) {
+		const games = localStorage.getItem("games");
+		if (games) {
+			const parsedGames = JSON.parse(games);
+			const index = parsedGames.findIndex((game: { id: number }) => game.id === gameId);
+
+			if (index !== -1) {
+				const currentGame = parsedGames[index];
+				currentGame.status = "completed";
+
+				// unlock next level
+				const nextGame = parsedGames[index + 1];
+				if (nextGame && nextGame.status === "locked") {
+					nextGame.status = "unlocked";
+				}
+
+				localStorage.setItem("games", JSON.stringify(parsedGames));
+			}
 		}
 	}
 
@@ -72,8 +93,6 @@
 			window.removeEventListener("message", onIframeMessage);
 		});
 	});
-
-	const formattedDocstring = parsePythonFunctions(pythonWrapper);
 </script>
 
 <svelte:head>
@@ -92,13 +111,10 @@
 		<iframe src={PUBLIC_UNITY_INSTANCE_URL} bind:this={gameIframe} width="100%" height="500px" title="Hra"></iframe>
 	</div>
 	<div slot="middle">
-		<!--
-		<div>
-			{@html marked(formattedDocstring)}
-		</div>
-		-->
 		{#key code}
 			<CodeEditor {code} />
+			<!-- testovaci tlacitko s ID=6 -->
+			<button onclick={() => handleLevelPass(6)}>Level Pass</button>
 		{/key}
 	</div>
 	<div slot="right">

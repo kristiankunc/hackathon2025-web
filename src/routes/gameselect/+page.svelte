@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
 
 	type LevelStatus = "locked" | "unlocked" | "completed";
 
@@ -14,7 +15,10 @@
 	const LINE_GAP = 10;
 	const MODAL_OFFSET_Y = 80;
 
-	export const levels: Level[] = [
+	let levels: Level[] = [];
+	let lines = [];
+
+	const defaultLevels: Level[] = [
 		{ id: 1, x: 0, y: 100, status: "completed" },
 		{ id: 2, x: 150, y: 250, status: "completed" },
 		{ id: 3, x: 275, y: 150, status: "completed" },
@@ -23,6 +27,35 @@
 		{ id: 6, x: 750, y: 220, status: "unlocked" },
 		{ id: 7, x: 1000 - NODE_RADIUS * 2, y: 180, status: "locked" }
 	];
+
+	onMount(() => {
+		const stored = localStorage.getItem("games");
+		if (stored) {
+			levels = JSON.parse(stored);
+		} else {
+			levels = defaultLevels;
+			localStorage.setItem("games", JSON.stringify(defaultLevels));
+		}
+	});
+
+	$: lines =
+		levels.length > 1
+			? levels.slice(0, -1).map((a, i) => {
+					const b = levels[i + 1];
+					const dx = b.x - a.x;
+					const dy = b.y - a.y;
+					const dist = Math.hypot(dx, dy);
+					const offsetX = (dx / dist) * (NODE_RADIUS + LINE_GAP);
+					const offsetY = (dy / dist) * (NODE_RADIUS + LINE_GAP);
+
+					return {
+						x1: a.x + NODE_RADIUS + offsetX,
+						y1: a.y + NODE_RADIUS + offsetY,
+						x2: b.x + NODE_RADIUS - offsetX,
+						y2: b.y + NODE_RADIUS - offsetY
+					};
+				})
+			: [];
 
 	let hoveredLevel: Level | null = null;
 	let modalPos = { x: 0, y: 0 };
@@ -44,22 +77,6 @@
 	function clearHover() {
 		hoveredLevel = null;
 	}
-
-	const lines = levels.slice(0, -1).map((a, i) => {
-		const b = levels[i + 1];
-		const dx = b.x - a.x;
-		const dy = b.y - a.y;
-		const dist = Math.sqrt(dx * dx + dy * dy);
-		const offsetX = (dx / dist) * (NODE_RADIUS + LINE_GAP);
-		const offsetY = (dy / dist) * (NODE_RADIUS + LINE_GAP);
-
-		return {
-			x1: a.x + NODE_RADIUS + offsetX,
-			y1: a.y + NODE_RADIUS + offsetY,
-			x2: b.x + NODE_RADIUS - offsetX,
-			y2: b.y + NODE_RADIUS - offsetY
-		};
-	});
 </script>
 
 <div class="map-wrapper">
@@ -90,4 +107,3 @@
 		{/if}
 	</div>
 </div>
-<!-- <Table columns={["Level", "Name", "Score"]} rows={[{ Level: 1, Name: "Level 1", Score: "95%", link: `/game/${1}` }]} /> -->
