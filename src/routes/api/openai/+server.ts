@@ -30,8 +30,6 @@ export let POST = async ({ request, locals }) => {
 	const levelCode = await getLevelCode(levelId);
 	const codeMD = parsePythonFunctions(levelCode);
 
-	console.log("Markdown Code:", codeMD);
-
 	const response = await client.responses.create({
 		model: "gpt-4.1",
 		input: [

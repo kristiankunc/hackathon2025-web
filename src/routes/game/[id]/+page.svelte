@@ -109,7 +109,7 @@
 	}
 
 	function sendActionToUnity(message: UnityMessage) {
-		console.log("Sending action to Unity", message);
+		console.log("Sending action to Unity from python called, message:", message);
 		sendMessageToUnity(gameIframe!, message);
 	}
 
@@ -128,7 +128,7 @@
 		if (isPyodideReady) {
 			pyodide.runPython(pythonWrapper);
 
-			const levelCode = await getLevelCode(data.levelId)
+			const levelCode = await getLevelCode(data.levelId);
 			pyodide.runPython(levelCode);
 		}
 
