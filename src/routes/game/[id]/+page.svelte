@@ -6,7 +6,7 @@
 	import pythonWrapper from "$lib/python/global_wrapper.py?raw";
 	import { parsePythonFunctions } from "$lib/python/pydoc-parser";
 	import { onMount } from "svelte";
-	import { sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
+	import { sendDataToPython, sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
 
 	let { data } = $props();
 	let code = $state("");
@@ -53,11 +53,10 @@
 				isUnityReady = true;
 				break;
 
-<<<<<<< HEAD
 			case "levelPass":
-				handleLevelPass(data.gameId);
+				handleLevelPass(data.levelId);
 				break;
-=======
+
 			case "setData":
 				console.log("Setting data in Unity");
 				const variableName = unityData.args.variableName;
@@ -79,7 +78,8 @@
 
 			case "levelPass":
 				const gameId = data.levelId;
->>>>>>> 41f3da6 (funkcni python controls)
+				handleLevelPass(gameId);
+				break;
 
 			default:
 				console.error("Unknown action from Unity", unityData);
@@ -87,7 +87,6 @@
 		}
 	}
 
-<<<<<<< HEAD
 	function handleLevelPass(gameId: number) {
 		const games = localStorage.getItem("games");
 		if (games) {
@@ -107,11 +106,11 @@
 				localStorage.setItem("games", JSON.stringify(parsedGames));
 			}
 		}
-=======
+	}
+
 	function sendActionToUnity(message: UnityMessage) {
 		console.log("Sending action to Unity", message);
 		sendMessageToUnity(gameIframe!, message);
->>>>>>> 41f3da6 (funkcni python controls)
 	}
 
 	onMount(async () => {

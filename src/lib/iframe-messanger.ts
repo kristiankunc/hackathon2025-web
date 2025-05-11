@@ -27,3 +27,8 @@ export function sendMessageToUnity(iframe: HTMLIFrameElement, messageData: Unity
 		"*"
 	);
 }
+
+// TODO: implement this function
+export function sendDataToPython(functionName: string, data: any) {
+	return null;
+}
