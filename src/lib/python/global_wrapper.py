@@ -95,6 +95,7 @@ async def run_code(event):
     ERROR_ELEMENT.textContent = ""
 
     try:
+        await asyncio.sleep(0.5) # pray this is enough time unity reload 🙏🙏🙏
         user_code = CODE_ELEMENT.textContent
         indented_code = "\n".join("    " + line for line in user_code.splitlines())
         full_code = f"async def __user_code__():\n{indented_code}"

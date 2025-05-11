@@ -174,7 +174,14 @@
 
 <PanelContainer>
 	<div slot="left">
-		<button id="run-code-button">Run Code</button>
+		<button
+			id="run-code-button"
+			onclick={() =>
+				sendMessageToUnity(gameIframe!, {
+					action: "restartLevel",
+					args: {}
+				})}>Run Code</button
+		>
 		<iframe src={PUBLIC_UNITY_INSTANCE_URL} bind:this={gameIframe} width="100%" height="500px" title="Hra"></iframe>
 	</div>
 	<div slot="middle">
