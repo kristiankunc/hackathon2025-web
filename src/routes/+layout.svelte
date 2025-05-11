@@ -22,7 +22,7 @@
 {#if isTooSmall}
 	<div class="screen-warning">This app is best viewed on a larger screen. Please resize your window or use a desktop.</div>
 {:else}
-	<main class="container">
+	<main class="main">
 		<slot />
 	</main>
 {/if}
