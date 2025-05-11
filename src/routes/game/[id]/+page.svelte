@@ -14,6 +14,7 @@
 	let gameIframe: HTMLIFrameElement | undefined = undefined;
 	let pyodide: any = null;
 	let isPyodideReady = $state(false);
+	const levelFiles = import.meta.glob("$lib/python/levels/level*.py", { as: "raw" });
 
 	// Asynchronous function to load Pyodide
 	async function loadPyodideInstance() {
@@ -127,6 +128,16 @@
 
 		if (isPyodideReady) {
 			pyodide.runPython(pythonWrapper);
+
+			const levelPath = `/src/lib/python/levels/level${data.levelId}.py`;
+			const loadLevel = levelFiles[levelPath];
+			console.log("Level files ", levelFiles);
+			if (loadLevel) {
+				const levelCode = await loadLevel();
+				pyodide.runPython(levelCode);
+			} else {
+				console.error(`Level script for levelId=${data.levelId} not found.`);
+			}
 		}
 
 		if (!isUnityReady) {
@@ -169,8 +180,8 @@
 	<div slot="middle">
 		{#key code}
 			<CodeEditor {code} />
-			<!-- testovaci tlacitko s ID=6 -->
-			<button onclick={() => handleLevelPass(6)}>Level Pass</button>
+			<!-- Unlock next level button (for testing) -->
+			<button onclick={() => handleLevelPass(data.levelId)}>Level Pass</button>
 		{/key}
 	</div>
 	<div slot="right">

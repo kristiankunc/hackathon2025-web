@@ -19,12 +19,12 @@
 	let lines = [];
 
 	const defaultLevels: Level[] = [
-		{ id: 1, x: 0, y: 100, status: "completed" },
-		{ id: 2, x: 150, y: 250, status: "completed" },
-		{ id: 3, x: 275, y: 150, status: "completed" },
-		{ id: 4, x: 450, y: 150, status: "completed" },
-		{ id: 5, x: 600, y: 250, status: "completed" },
-		{ id: 6, x: 750, y: 220, status: "unlocked" },
+		{ id: 1, x: 0, y: 100, status: "unlocked" },
+		{ id: 2, x: 150, y: 250, status: "locked" },
+		{ id: 3, x: 275, y: 150, status: "locked" },
+		{ id: 4, x: 450, y: 150, status: "locked" },
+		{ id: 5, x: 600, y: 250, status: "locked" },
+		{ id: 6, x: 750, y: 220, status: "locked" },
 		{ id: 7, x: 1000 - NODE_RADIUS * 2, y: 180, status: "locked" }
 	];
 
