@@ -14,7 +14,6 @@
 
 	let messageElement: HTMLElement | undefined = undefined;
 
-	// Check if running on localhost
 	const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost";
 
 	function updateCode(event: Event) {
