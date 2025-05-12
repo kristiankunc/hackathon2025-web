@@ -6,6 +6,7 @@
 	export let onClick: () => void = () => {};
 	export let href: string | null = null;
 	export let variant: "primary" | "secondary" | "tertiary" | "simple" = "simple";
+	export let id: string | null = null;
 </script>
 
 {#if href}
@@ -25,7 +26,7 @@
 		{/if}
 	</a>
 {:else}
-	<button class="btn btn--{variant} {loading ? 'loading' : ''}" {type} disabled={disabled || loading} on:click={onClick}>
+	<button class="btn btn--{variant} {loading ? 'loading' : ''}" {type} disabled={disabled || loading} on:click={onClick} id={id}>
 		{#if text}
 			{text}
 		{:else}

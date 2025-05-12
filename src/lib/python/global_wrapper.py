@@ -37,7 +37,6 @@ def unity_call(func):
 
         message_json = json.dumps(message)
 
-        print(f"Sending message to Unity: {message_json}")
         js.globalThis.sendActionToUnity(js.structuredClone(js.JSON.parse(message_json)))
 
     return wrapper

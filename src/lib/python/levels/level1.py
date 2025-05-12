@@ -1,12 +1,11 @@
 @unity_call # type: ignore
-def forward(distance: int = 1, speed: int = 1):
+def forward(distance: int = 1):
     """
     Makes the character move forward n steps.
     
     Arguments:
         steps (int): The number of steps to move forward. Defaults to 1.
     """
-    print(f"Moving forward {distance} steps at speed {speed}")
     pass
 
 @unity_call # type: ignore
