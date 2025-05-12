@@ -42,7 +42,7 @@
 	];
 
 	onMount(() => {
-	const stored: string | null = getCookie("games");
+		const stored: string | null = getCookie("games");
 		if (stored) {
 			levels = JSON.parse(stored);
 		} else {
@@ -76,8 +76,8 @@
 	function handleHover(level: Level) {
 		hoveredLevel = level;
 		modalPos = {
-			x: levelCoordinates[level.id-1].x + NODE_RADIUS,
-			y: levelCoordinates[level.id-1].y - MODAL_OFFSET_Y
+			x: levelCoordinates[level.id - 1].x + NODE_RADIUS,
+			y: levelCoordinates[level.id - 1].y - MODAL_OFFSET_Y
 		};
 	}
 
@@ -103,7 +103,8 @@
 		{#each levels as level}
 			<button
 				class="node {level.status}"
-				style="left: {levelCoordinates[level.id-1].x}px; top: {levelCoordinates[level.id-1].y}px; width: {NODE_RADIUS * 2}px; height: {NODE_RADIUS * 2}px;"
+				style="left: {levelCoordinates[level.id - 1].x}px; top: {levelCoordinates[level.id - 1].y}px; width: {NODE_RADIUS *
+					2}px; height: {NODE_RADIUS * 2}px;"
 				on:mouseenter={() => handleHover(level)}
 				on:mouseleave={clearHover}
 				on:click={() => handleClick(level)}
@@ -113,7 +114,7 @@
 		{/each}
 
 		{#if hoveredLevel}
-			<div class="modal" style="left: {modalPos.x}px; top: {modalPos.y}px">
+			<div class="node__modal" style="left: {modalPos.x}px; top: {modalPos.y}px">
 				<strong>Level {hoveredLevel.id}</strong><br />
 				Status: {hoveredLevel.status}
 			</div>

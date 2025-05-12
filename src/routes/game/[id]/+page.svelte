@@ -9,6 +9,7 @@
 	import { sendDataToPython, sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
 	import { getCookie, setCookie } from "$lib/cookies";
 	import Button from "$lib/components/ui/button.svelte";
+	import Modal from "$lib/components/ui/modal.svelte";
 
 	let { data } = $props();
 	let code = $state("");
@@ -173,6 +174,17 @@
 			window.removeEventListener("message", onIframeMessage);
 		});
 	});
+
+	// modal logic
+	let isModalOpen = $state(false);
+
+	const closeModal = () => {
+		isModalOpen = false;
+	};
+
+	onMount(() => {
+		isModalOpen = true;
+	});
 </script>
 
 <svelte:head>
@@ -181,6 +193,13 @@
 	<script src="https://pyscript.net/releases/2025.3.1/core.js" type="module"></script>
 </svelte:head>
 
+<Modal isOpen={isModalOpen} {closeModal} title="Level {data.levelId}">
+	<p class="modal__text">Here you can learn Python programming while playing a game.</p>
+	<p class="modal__text">Use the AI chat on the right to write your promts which will produce Python code</p>
+	<p class="modal__text">You can also see preview of generated code in the code editor in the middle.</p>
+	<p class="modal__text">Click "Run" to execute your code in the game.</p>
+	<p class="modal__text">Good luck and have fun!</p>
+</Modal>
 <PanelContainer>
 	<div slot="left">
 		<div class="game-section">
@@ -191,7 +210,11 @@
 			<div class="game-info">
 				<span class="level-name">Level {data.levelId}</span>
 				<div class="game-buttons">
-					<Button onClick={() => sendMessageToUnity(gameIframe!, { action: "restartLevel", args: {} })} id="run-code-button" disabled={!isUnityReady || !isPyodideReady}>
+					<Button
+						onClick={() => sendMessageToUnity(gameIframe!, { action: "restartLevel", args: {} })}
+						id="run-code-button"
+						disabled={!isUnityReady || !isPyodideReady}
+					>
 						<span class="icon">▶️</span> Run
 					</Button>
 
@@ -201,7 +224,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 	<div slot="middle">
 		{#key code}

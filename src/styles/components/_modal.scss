@@ -1,0 +1,57 @@
+@use "../abstract" as *;
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease-in-out;
+	z-index: 1000;
+	color: $background-color;
+
+	&.open {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	&__content {
+		position: relative;
+		background: $text-color;
+		padding: 2rem;
+		border-radius: 8px;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		max-width: 700px;
+		// text-align: center;
+		z-index: 1100;
+	}
+
+	&__header {
+		font-size: 1.5rem;
+		margin-bottom: 10px;
+	}
+
+	&__text {
+		font-size: 1rem;
+		&:not(:last-child) {
+			margin-bottom: 0.5rem;
+		}
+	}
+
+	&__close-btn {
+		color: $danger-color;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		background: none;
+		border: none;
+		font-size: 1.5rem;
+		cursor: pointer;
+	}
+}
