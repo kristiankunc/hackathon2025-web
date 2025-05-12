@@ -168,7 +168,7 @@
 	<div slot="left">
 		<button
 			id="run-code-button"
-			disabled={!isUnityReady || !isPyodideReady}
+			disabled={!isUnityReady}
 			onclick={() =>
 				sendMessageToUnity(gameIframe!, {
 					action: "restartLevel",
