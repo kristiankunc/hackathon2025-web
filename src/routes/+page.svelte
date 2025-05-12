@@ -117,7 +117,7 @@
 			</p>
 			<div class="section__cta">
 				<Button href="/gameselect" variant="primary">Play Now</Button>
-				<Button href="/about" variant="secondary">Learn More</Button>
+				<Button href="#tutorial" variant="secondary">Learn More</Button>
 			</div>
 			<p class="section__tagline">Learn to think like a developer — by learning to prompt like one.</p>
 		</div>
