@@ -18,7 +18,7 @@
 
 	let messageElement: HTMLElement | undefined = undefined;
 
-	const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost";
+	const isLocalhost = false; // typeof window !== "undefined" && window.location.hostname === "localhost";
 
 	function updateCode(event: Event) {
 		const target = event.target as HTMLTextAreaElement;
