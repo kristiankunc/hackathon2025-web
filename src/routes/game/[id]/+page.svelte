@@ -51,6 +51,7 @@
 	}
 
 	async function onIframeMessage(event: MessageEvent) {
+		console.log("(SVELTE) Message received from iframe", event.data);
 		const message = event.data as { type: string; data: UnityMessage };
 
 		if (!message.type || !message.data) return;
@@ -139,7 +140,7 @@
 
 		console.log(globalThis);
 
-		window.addEventListener("message", onIframeMessage);
+		window.addEventListener("message", onIframeMessage, false);
 
 		await loadPyodideInstance();
 
@@ -168,10 +169,6 @@
 			args: {
 				levelId: data.levelId
 			}
-		});
-
-		return new Promise(() => {
-			window.removeEventListener("message", onIframeMessage);
 		});
 	});
 

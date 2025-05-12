@@ -27,7 +27,7 @@
 						that generate the code for you.
 					</p>
 
-					<img src="https://placehold.co/600x400" alt="Game objective screenshot" class="tutorial__img" />
+					<img src="https://i.imgur.com/ZoDFIZ2.png" alt="Game objective screenshot" class="tutorial__img" />
 				</div>
 				<div class="tutorial__section">
 					<p class="tutorial__title">🎯 Your Goal</p>
