@@ -1,8 +1,6 @@
 @use "../abstract" as *;
 
-.button {
-	background-color: $background-color-darker;
-	color: $text-color;
+.btn {
 	border: none;
 	padding: 0.625rem 1.25rem;
 	line-height: 1.5;
@@ -15,10 +13,6 @@
 	align-items: center;
 	gap: 0.5rem;
 	transition: background-color $transition-duration $transition-ease;
-
-	&:hover {
-		background-color: $btn-hover-color;
-	}
 
 	&:disabled {
 		background-color: $btn-disabled-color;
@@ -36,5 +30,41 @@
 
 	&.loading:hover {
 		background-color: $btn-loading-color;
+	}
+
+	&--simple {
+		background-color: $background-color-darker;
+		color: $text-color;
+
+		&:hover {
+			background-color: $btn-hover-color;
+		}
+	}
+
+	&--primary {
+		background-color: $primary-color;
+		color: $text-color;
+
+		&:hover {
+			background-color: $primary-color-darker;
+		}
+	}
+
+	&--secondary {
+		background-color: $secondary-color;
+		color: $text-color;
+
+		&:hover {
+			background-color: $secondary-color-darker;
+		}
+	}
+
+	&--tertiary {
+		background-color: $tertiary-color;
+		color: $text-color;
+
+		&:hover {
+			background-color: $tertiary-color-darker;
+		}
 	}
 }
