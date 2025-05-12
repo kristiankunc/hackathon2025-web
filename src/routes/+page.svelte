@@ -2,7 +2,13 @@
 	import { onMount } from "svelte";
 	import * as THREE from "three";
 	import { Lensflare, LensflareElement } from "three/examples/jsm/objects/Lensflare.js";
+	import Button from "$lib/components/ui/button.svelte";
+	import Tabs from "$lib/components/tabs/tabs.svelte";
+	import Tab from "$lib/components/tabs/tab.svelte";
+	import TabList from "$lib/components/tabs/tabList.svelte";
+	import TabPanel from "$lib/components/tabs/tabPanel.svelte";
 
+	let canvasContainer: HTMLDivElement;
 	let camera: THREE.PerspectiveCamera;
 	let scene: THREE.Scene;
 	let renderer: THREE.WebGLRenderer;
@@ -19,7 +25,7 @@
 
 		renderer = new THREE.WebGLRenderer({ antialias: true });
 		renderer.setSize(window.innerWidth, window.innerHeight);
-		document.body.appendChild(renderer.domElement);
+		canvasContainer.appendChild(renderer.domElement);
 
 		container = new THREE.Object3D();
 		scene.add(container);
@@ -58,9 +64,11 @@
 		}
 
 		// svetla
-		addLight(0.08, 0.8, 0.5, 0, 0, -1000);
-		addLight(0.55, 0.9, 0.5, 500, 0, -1000);
-		addLight(0.995, 0.5, 0.9, -500, 0, -1000);
+		// addLight(0.08, 0.8, 0.5, 0, 0, -1000);
+		addLight(0.1, 0.7, 0.5, 300, 0, -1000);
+		addLight(0.995, 0.5, 0.9, -300, 0, -1000);
+		addLight(0.1, 0.7, 0.5, 750, -400, -800);
+		addLight(0.55, 0.9, 0.5, 1500, -400, -650);
 
 		const dirLight = new THREE.DirectionalLight(0xffffff, 0.15);
 		dirLight.position.set(0, -1, 0).normalize();
@@ -101,39 +109,48 @@
 	});
 </script>
 
-<section class="section hero">
-	<div class="container">
-		<h2 class="section__title">Hero</h2>
-		<p class="section__text">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa ullam, expedita assumenda maiores quae mollitia repellat maxime illo sapiente
-			libero laborum accusantium numquam impedit nisi dolorum, reprehenderit commodi incidunt quaerat suscipit ex harum aperiam! Pariatur, aliquam
-			vitae in quisquam eaque sapiente autem. Itaque harum iusto dolorum debitis nam consectetur nemo vel, natus officia expedita consequuntur nisi ab
-			aliquid impedit exercitationem qui voluptates molestias dicta. Odio explicabo beatae corrupti, quaerat exercitationem itaque totam quibusdam
-			animi amet accusantium doloribus eveniet quidem asperiores quisquam sit minus aliquam, molestias laudantium soluta in a! Aspernatur omnis ut
-			voluptatibus. Reprehenderit nisi tempore quia sed blanditiis vitae quae minima fugit, maxime maiores nemo eum rem, neque libero totam quos
-			culpa? Vitae assumenda voluptatum beatae velit esse. Aperiam beatae ullam excepturi sed quas sunt tempora non esse voluptatem molestias. Aperiam
-			quibusdam mollitia alias dicta doloremque sequi, accusamus dolorum eaque fugiat blanditiis non itaque enim. Quidem dolor magnam deserunt odit
-			praesentium nam laudantium hic repellendus quo dignissimos, corporis, suscipit officia reiciendis illo. Dicta quibusdam illo delectus unde
-			temporibus corrupti quod sint? Quibusdam, cum, asperiores ab enim nulla a repellat id tenetur quod ducimus necessitatibus laboriosam harum
-			deleniti corrupti omnis. Officiis numquam ad ducimus maiores ab corrupti molestiae? Excepturi, odio.
-		</p>
-	</div>
-</section>
-<section class="section tutorial">
-	<div class="container">
-		<h2 class="section__title">Tutorial</h2>
-		<p class="section__text">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa ullam, expedita assumenda maiores quae mollitia repellat maxime illo sapiente
-			libero laborum accusantium numquam impedit nisi dolorum, reprehenderit commodi incidunt quaerat suscipit ex harum aperiam! Pariatur, aliquam
-			vitae in quisquam eaque sapiente autem. Itaque harum iusto dolorum debitis nam consectetur nemo vel, natus officia expedita consequuntur nisi ab
-			aliquid impedit exercitationem qui voluptates molestias dicta. Odio explicabo beatae corrupti, quaerat exercitationem itaque totam quibusdam
-			animi amet accusantium doloribus eveniet quidem asperiores quisquam sit minus aliquam, molestias laudantium soluta in a! Aspernatur omnis ut
-			voluptatibus. Reprehenderit nisi tempore quia sed blanditiis vitae quae minima fugit, maxime maiores nemo eum rem, neque libero totam quos
-			culpa? Vitae assumenda voluptatum beatae velit esse. Aperiam beatae ullam excepturi sed quas sunt tempora non esse voluptatem molestias. Aperiam
-			quibusdam mollitia alias dicta doloremque sequi, accusamus dolorum eaque fugiat blanditiis non itaque enim. Quidem dolor magnam deserunt odit
-			praesentium nam laudantium hic repellendus quo dignissimos, corporis, suscipit officia reiciendis illo. Dicta quibusdam illo delectus unde
-			temporibus corrupti quod sint? Quibusdam, cum, asperiores ab enim nulla a repellat id tenetur quod ducimus necessitatibus laboriosam harum
-			deleniti corrupti omnis. Officiis numquam ad ducimus maiores ab corrupti molestiae? Excepturi, odio.
-		</p>
-	</div>
-</section>
+<div class="wrapper" bind:this={canvasContainer}>
+	<section class="section hero">
+		<div class="container">
+			<h2 class="section__title">Master Python by Outsmarting a Cube — With AI as Your Teammate</h2>
+			<p class="section__text">
+				Welcome to Code Block AI, a unique game where the only way to win is by guiding a cube through obstacles — using Python code you can't write
+				yourself. Instead, you'll craft prompts and collaborate with AI to generate the logic. It's not just coding. It's prompt-powered
+				problem-solving.
+			</p>
+			<div class="section__cta">
+				<Button href="/gameselect" variant="primary">Play Now</Button>
+				<Button href="/gameselect" variant="secondary">Play Now</Button>
+				<Button href="/gameselect" variant="tertiary">Play Now</Button>
+				<Button href="/gameselect">Play Now</Button>
+				<!-- <Button href="/about">Learn More</Button> -->
+			</div>
+			<p class="section__tagline">Learn to think like a developer — by learning to prompt like one.</p>
+		</div>
+	</section>
+	<section class="section tutorial">
+		<div class="container">
+			<h2 class="section__title">Tutorial</h2>
+
+			<Tabs>
+				<TabList>
+					<Tab name="overview">Overview</Tab>
+					<Tab name="functions">Functions</Tab>
+					<Tab name="tips">Prompting Tips</Tab>
+				</TabList>
+
+				<TabPanel name="overview">
+					<p>Welcome to Code Block AI! Learn how it works.</p>
+				</TabPanel>
+
+				<TabPanel name="functions">
+					<p>These are the predefined Python functions you can use in your prompts.</p>
+				</TabPanel>
+
+				<TabPanel name="tips">
+					<p>Write effective prompts to help AI generate optimal code solutions.</p>
+				</TabPanel>
+			</Tabs>
+		</div>
+	</section>
+</div>
