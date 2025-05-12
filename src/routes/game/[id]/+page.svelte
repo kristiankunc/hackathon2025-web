@@ -7,6 +7,7 @@
 	import getLevelCode from "$lib/python/get-level-code.js";
 	import { onMount } from "svelte";
 	import { sendDataToPython, sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
+	import { getCookie, setCookie } from "$lib/cookies";
 
 	let { data } = $props();
 	let code = $state("");
@@ -87,23 +88,23 @@
 		}
 	}
 
-	function handleLevelPass(gameId: number) {
-		const games = localStorage.getItem("games");
-		if (games) {
-			const parsedGames = JSON.parse(games);
+	function handleLevelPass(gameId: number): void {
+		const gamesCookie = getCookie("games");
+		if (gamesCookie) {
+			const parsedGames = JSON.parse(gamesCookie);
 			const index = parsedGames.findIndex((game: { id: number }) => game.id === gameId);
 
 			if (index !== -1) {
 				const currentGame = parsedGames[index];
 				currentGame.status = "completed";
 
-				// unlock next level
+				// Unlock next level
 				const nextGame = parsedGames[index + 1];
 				if (nextGame && nextGame.status === "locked") {
 					nextGame.status = "unlocked";
 				}
 
-				localStorage.setItem("games", JSON.stringify(parsedGames));
+				setCookie("games", JSON.stringify(parsedGames));
 			}
 		}
 	}
