@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
+	import { getCookie, setCookie } from "$lib/cookies";
 
 	type LevelStatus = "locked" | "unlocked" | "completed";
 
 	interface Level {
 		id: number;
+		status: LevelStatus;
+	}
+	interface LevelCoordinates {
 		x: number;
 		y: number;
-		status: LevelStatus;
 	}
 
 	const NODE_RADIUS = 30;
@@ -19,29 +22,39 @@
 	let lines = [];
 
 	const defaultLevels: Level[] = [
-		{ id: 1, x: 0, y: 100, status: "unlocked" },
-		{ id: 2, x: 150, y: 250, status: "locked" },
-		{ id: 3, x: 275, y: 150, status: "locked" },
-		{ id: 4, x: 450, y: 150, status: "locked" },
-		{ id: 5, x: 600, y: 250, status: "locked" },
-		{ id: 6, x: 750, y: 220, status: "locked" },
-		{ id: 7, x: 1000 - NODE_RADIUS * 2, y: 180, status: "locked" }
+		{ id: 1, status: "unlocked" },
+		{ id: 2, status: "locked" },
+		{ id: 3, status: "locked" },
+		{ id: 4, status: "locked" },
+		{ id: 5, status: "locked" },
+		{ id: 6, status: "locked" },
+		{ id: 7, status: "locked" }
+	];
+
+	const levelCoordinates: LevelCoordinates[] = [
+		{ x: 0, y: 100 },
+		{ x: 150, y: 250 },
+		{ x: 275, y: 150 },
+		{ x: 450, y: 150 },
+		{ x: 600, y: 250 },
+		{ x: 750, y: 220 },
+		{ x: 1000 - NODE_RADIUS * 2, y: 180 }
 	];
 
 	onMount(() => {
-		const stored = localStorage.getItem("games");
+	const stored: string | null = getCookie("games");
 		if (stored) {
 			levels = JSON.parse(stored);
 		} else {
 			levels = defaultLevels;
-			localStorage.setItem("games", JSON.stringify(defaultLevels));
+			setCookie("games", JSON.stringify(defaultLevels));
 		}
 	});
 
 	$: lines =
-		levels.length > 1
-			? levels.slice(0, -1).map((a, i) => {
-					const b = levels[i + 1];
+		levelCoordinates.length > 1
+			? levelCoordinates.slice(0, -1).map((a, i) => {
+					const b = levelCoordinates[i + 1];
 					const dx = b.x - a.x;
 					const dy = b.y - a.y;
 					const dist = Math.hypot(dx, dy);
@@ -63,8 +76,8 @@
 	function handleHover(level: Level) {
 		hoveredLevel = level;
 		modalPos = {
-			x: level.x + NODE_RADIUS,
-			y: level.y - MODAL_OFFSET_Y
+			x: levelCoordinates[level.id-1].x + NODE_RADIUS,
+			y: levelCoordinates[level.id-1].y - MODAL_OFFSET_Y
 		};
 	}
 
@@ -90,7 +103,7 @@
 		{#each levels as level}
 			<button
 				class="node {level.status}"
-				style="left: {level.x}px; top: {level.y}px; width: {NODE_RADIUS * 2}px; height: {NODE_RADIUS * 2}px;"
+				style="left: {levelCoordinates[level.id-1].x}px; top: {levelCoordinates[level.id-1].y}px; width: {NODE_RADIUS * 2}px; height: {NODE_RADIUS * 2}px;"
 				on:mouseenter={() => handleHover(level)}
 				on:mouseleave={clearHover}
 				on:click={() => handleClick(level)}
