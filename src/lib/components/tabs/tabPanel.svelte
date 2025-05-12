@@ -14,7 +14,7 @@
 </script>
 
 {#if $isVisible}
-	<div class="tab-panel" role="tabpanel">
+	<div class="tabs__panel" role="tabpanel">
 		<slot />
 	</div>
 {/if}

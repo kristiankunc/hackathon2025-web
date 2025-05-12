@@ -61,3 +61,57 @@ canvas {
 		margin-bottom: 1rem;
 	}
 }
+
+.tutorial {
+	&__section {
+		&:not(:last-child) {
+			margin-bottom: 2rem;
+		}
+	}
+
+	&__title {
+		font-size: 1.5rem;
+		font-weight: 500;
+		line-height: 1.2;
+		margin-bottom: 1.75rem;
+	}
+
+	&__paragraph {
+		font-size: 1rem;
+		line-height: 1.5;
+
+		&:not(:last-child) {
+			margin-bottom: 1.25rem;
+		}
+	}
+
+	&__code {
+		background-color: #1e1e1e;
+		color: #e5e5e5;
+		font-family: "Fira Code", monospace;
+		font-size: 0.9rem;
+		padding: 0 1rem;
+		border-radius: 6px;
+	}
+
+	&__img {
+		width: 100%;
+		border-radius: 0.5rem;
+		&:not(:last-child) {
+			margin-bottom: 1.5rem;
+		}
+	}
+
+	&__list {
+		padding-left: 1.5rem;
+		list-style: disc;
+
+		li {
+			margin-bottom: 0.5rem;
+		}
+
+		&:not(:last-child) {
+			margin-bottom: 1.25rem;
+		}
+	}
+}
