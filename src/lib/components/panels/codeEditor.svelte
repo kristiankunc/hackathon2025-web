@@ -3,8 +3,12 @@
 	import Highlight, { LineNumbers } from "svelte-highlight";
 	import python from "svelte-highlight/languages/python";
 	import snazzy from "svelte-highlight/styles/snazzy";
+	import Modal from "../ui/modal.svelte";
+	import { parsePythonFunctions } from "$lib/python/pydoc-parser";
+	import { marked } from "marked";
+	import getLevelCode from "$lib/python/get-level-code";
 
-	let { code } = $props();
+	let { code, levelId } = $props();
 
 	let messageContent = $state(`{
 	"name": "test",
@@ -30,13 +34,24 @@
 			value: parsedMessage.value
 		});
 	}
+
+	// modal logic
+	let isModalOpen = $state(false);
+
+	function openModal() {
+		isModalOpen = true;
+	}
+
+	function closeModal() {
+		isModalOpen = false;
+	}
 </script>
 
 <svelte:head>
 	{@html snazzy}
 </svelte:head>
 
-{#if isLocalhost}
+{#if !isLocalhost}
 	<p>Debug code editor</p>
 	<textarea bind:value={code} oninput={updateCode} rows="10" cols="50" style="width: 100%;"></textarea>
 
@@ -48,6 +63,13 @@
 <Highlight language={python} {code} let:highlighted>
 	<LineNumbers {highlighted} wrapLines />
 </Highlight>
+
+<button class="question-btn" onclick={openModal}>?</button>
+<Modal isOpen={isModalOpen} {closeModal} title="List of Functions">
+	{#await getLevelCode(levelId) then levelCode}
+		{@html marked(parsePythonFunctions(levelCode))}
+	{/await}
+</Modal>
 
 <p id="python-output"></p>
 <p id="python-error"></p>

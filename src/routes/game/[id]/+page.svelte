@@ -222,11 +222,9 @@
 			</div>
 		</div>
 	</div>
-	<div slot="middle">
+	<div slot="middle" class="code-editor">
 		{#key code}
-			<CodeEditor {code} />
-			<!-- Unlock next level button (for testing) -->
-			<button onclick={() => handleLevelPass(data.levelId)}>Level Pass</button>
+			<CodeEditor {code} levelId={data.levelId} />
 		{/key}
 	</div>
 	<div slot="right">
