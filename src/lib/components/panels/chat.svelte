@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from "$lib/components/ui/button.svelte";
 	import { onMount } from "svelte";
+	import { marked } from "marked";
 
 	type Message = {
 		role: "user" | "assistant";
@@ -88,9 +89,13 @@
 	<div class="chat__messages" aria-live="polite">
 		{#each messages as m}
 			<div class="chat__message {m.role}">
-				<strong>{m.role === "user" ? "You" : "AI"}:</strong>{m.content}
+				<strong>{m.role === "user" ? "You" : "AI"}:</strong>{#if m.role === "assistant"}<div class="chat__markdown">{@html marked(m.content)}</div>
+
+				{:else}<span>{m.content}</span>
+				{/if}
 			</div>
 		{/each}
+
 
 		{#if loading}
 			<div class="chat__message assistant">AI is thinking...</div>

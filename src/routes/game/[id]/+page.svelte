@@ -8,6 +8,7 @@
 	import { onMount } from "svelte";
 	import { sendDataToPython, sendMessageToUnity, type UnityMessage } from "$lib/iframe-messanger";
 	import { getCookie, setCookie } from "$lib/cookies";
+	import Button from "$lib/components/ui/button.svelte";
 
 	let { data } = $props();
 	let code = $state("");
@@ -182,16 +183,25 @@
 
 <PanelContainer>
 	<div slot="left">
-		<button
-			id="run-code-button"
-			disabled={!isUnityReady || !isPyodideReady}
-			onclick={() =>
-				sendMessageToUnity(gameIframe!, {
-					action: "restartLevel",
-					args: {}
-				})}>Run Code</button
-		>
-		<iframe src={PUBLIC_UNITY_INSTANCE_URL} bind:this={gameIframe} width="100%" height="500px" title="Hra"></iframe>
+		<div class="game-section">
+			<div class="game-container">
+				<iframe src={PUBLIC_UNITY_INSTANCE_URL} bind:this={gameIframe} title="Hra" class="game"></iframe>
+			</div>
+
+			<div class="game-info">
+				<span class="level-name">Level {data.levelId}</span>
+				<div class="game-buttons">
+					<Button onClick={() => sendMessageToUnity(gameIframe!, { action: "restartLevel", args: {} })} id="run-code-button" disabled={!isUnityReady || !isPyodideReady}>
+						<span class="icon">▶️</span> Run
+					</Button>
+
+					<Button onClick={() => sendMessageToUnity(gameIframe!, { action: "restartLevel", args: {} })} disabled={!isUnityReady || !isPyodideReady}>
+						<span class="icon">🔄</span> Reset
+					</Button>
+				</div>
+			</div>
+		</div>
+
 	</div>
 	<div slot="middle">
 		{#key code}
