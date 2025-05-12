@@ -3,10 +3,7 @@
 	import * as THREE from "three";
 	import { Lensflare, LensflareElement } from "three/examples/jsm/objects/Lensflare.js";
 	import Button from "$lib/components/ui/button.svelte";
-	import Tabs from "$lib/components/tabs/tabs.svelte";
-	import Tab from "$lib/components/tabs/tab.svelte";
-	import TabList from "$lib/components/tabs/tabList.svelte";
-	import TabPanel from "$lib/components/tabs/tabPanel.svelte";
+	import TutorialSection from "$lib/components/tutorial.svelte";
 
 	let canvasContainer: HTMLDivElement;
 	let camera: THREE.PerspectiveCamera;
@@ -120,37 +117,10 @@
 			</p>
 			<div class="section__cta">
 				<Button href="/gameselect" variant="primary">Play Now</Button>
-				<Button href="/gameselect" variant="secondary">Play Now</Button>
-				<Button href="/gameselect" variant="tertiary">Play Now</Button>
-				<Button href="/gameselect">Play Now</Button>
-				<!-- <Button href="/about">Learn More</Button> -->
+				<Button href="/about" variant="secondary">Learn More</Button>
 			</div>
 			<p class="section__tagline">Learn to think like a developer — by learning to prompt like one.</p>
 		</div>
 	</section>
-	<section class="section tutorial">
-		<div class="container">
-			<h2 class="section__title">Tutorial</h2>
-
-			<Tabs>
-				<TabList>
-					<Tab name="overview">Overview</Tab>
-					<Tab name="functions">Functions</Tab>
-					<Tab name="tips">Prompting Tips</Tab>
-				</TabList>
-
-				<TabPanel name="overview">
-					<p>Welcome to Code Block AI! Learn how it works.</p>
-				</TabPanel>
-
-				<TabPanel name="functions">
-					<p>These are the predefined Python functions you can use in your prompts.</p>
-				</TabPanel>
-
-				<TabPanel name="tips">
-					<p>Write effective prompts to help AI generate optimal code solutions.</p>
-				</TabPanel>
-			</Tabs>
-		</div>
-	</section>
+	<TutorialSection />
 </div>
