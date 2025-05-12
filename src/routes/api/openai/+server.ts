@@ -1,7 +1,7 @@
 import { env } from "$env/dynamic/private";
 import OpenAI from "openai";
 import { parsePythonFunctions } from "$lib/python/pydoc-parser";
-import getLevelCode from "$lib/python/get-level-code.js";
+import getLevelCode, { LEVELS } from "$lib/python/get-level-code.js";
 
 const client = new OpenAI({
 	apiKey: env.OPENAI_API_KEY
@@ -29,13 +29,15 @@ export let POST = async ({ request, locals }) => {
 
 	const levelCode = await getLevelCode(levelId);
 	const codeMD = parsePythonFunctions(levelCode);
+	const systemPrompt = LEVELS[levelId - 1].additionalPrompt || "";
+	const systemMessage = `${systemPrompt}\nYou have these functions to work with. Avoid using time.sleep in your output. Always use await asyncio.sleep(n) as your code will be wrapped in a main async function\n${codeMD}`;
 
 	const response = await client.responses.create({
 		model: "gpt-4.1",
 		input: [
 			{
 				role: "developer",
-				content: codeMD
+				content: systemMessage
 			},
 			...body.messages
 		]

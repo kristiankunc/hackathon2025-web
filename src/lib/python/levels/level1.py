@@ -21,3 +21,10 @@ def turn_right():
     Makes the character turn right.
     """
     pass
+
+@unity_call # type: ignore
+def interact():
+    """
+    Makes the character interact with the object in front of it.
+    """
+    pass

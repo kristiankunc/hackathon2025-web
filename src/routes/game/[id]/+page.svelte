@@ -193,13 +193,10 @@
 	<script src="https://pyscript.net/releases/2025.3.1/core.js" type="module"></script>
 </svelte:head>
 
-<Modal isOpen={isModalOpen} {closeModal} title="Level {data.levelId}">
-	<p class="modal__text">Here you can learn Python programming while playing a game.</p>
-	<p class="modal__text">Use the AI chat on the right to write your promts which will produce Python code</p>
-	<p class="modal__text">You can also see preview of generated code in the code editor in the middle.</p>
-	<p class="modal__text">Click "Run" to execute your code in the game.</p>
-	<p class="modal__text">Good luck and have fun!</p>
+<Modal isOpen={isModalOpen} {closeModal} title={data.levelTitle}>
+	<p class="modal__text">{data.levelDescription}</p>
 </Modal>
+
 <PanelContainer>
 	<div slot="left">
 		<div class="game-section">

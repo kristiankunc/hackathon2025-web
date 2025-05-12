@@ -1,3 +1,4 @@
+import { LEVELS } from "$lib/python/get-level-code";
 import type { PageServerLoad } from "./$types";
 import { redirect } from "@sveltejs/kit";
 
@@ -23,6 +24,8 @@ export const load: PageServerLoad = async ({ params, request }) => {
 	}
 
 	return {
-		levelId
+		levelId,
+		levelTitle: LEVELS[levelId - 1].title,
+		levelDescription: LEVELS[levelId - 1].description
 	};
 };
