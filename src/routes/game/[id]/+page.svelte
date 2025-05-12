@@ -19,6 +19,21 @@
 	// Asynchronous function to load Pyodide
 	async function loadPyodideInstance() {
 		try {
+			// Wait for the Pyodide script to load
+			await new Promise<void>((resolve, reject) => {
+				const interval = setInterval(() => {
+					// @ts-ignore
+					if (window.loadPyodide) {
+						clearInterval(interval);
+						resolve();
+					}
+				}, 100);
+				setTimeout(() => {
+					clearInterval(interval);
+					reject(new Error("Pyodide script failed to load"));
+				}, 10000); // Timeout after 10 seconds
+			});
+
 			// @ts-ignore
 			pyodide = await window.loadPyodide();
 			isPyodideReady = true;
@@ -169,7 +184,7 @@
 	<div slot="left">
 		<button
 			id="run-code-button"
-			disabled={!isUnityReady}
+			disabled={!isUnityReady || !isPyodideReady}
 			onclick={() =>
 				sendMessageToUnity(gameIframe!, {
 					action: "restartLevel",
