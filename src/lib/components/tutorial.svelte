@@ -8,7 +8,7 @@
 	import Tabs from "./tabs/tabs.svelte";
 </script>
 
-<section class="section tutorial">
+<section class="section tutorial" id="tutorial">
 	<div class="container">
 		<h2 class="section__title">Tutorial</h2>
 		<Tabs orientation="vertical">

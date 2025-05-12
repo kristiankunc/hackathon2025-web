@@ -9,6 +9,7 @@
 body {
 	background-color: $background-color;
 	color: $text-color;
+	scroll-behavior: smooth !important;
 }
 
 a {
