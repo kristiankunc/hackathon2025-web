@@ -114,4 +114,10 @@ canvas {
 			margin-bottom: 1.25rem;
 		}
 	}
+
+	&__link {
+		color: dodgerblue;
+		text-decoration: underline;
+		font-weight: 500;
+	}
 }

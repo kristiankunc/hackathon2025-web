@@ -4,7 +4,7 @@
 
 	import Button from "$lib/components/ui/button.svelte";
 
-	let appName = "Hackathon 2025";
+	let appName = "Prompt or Get Prompted!";
 </script>
 
 <header class="navbar">

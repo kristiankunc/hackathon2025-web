@@ -1,4 +1,7 @@
 <script lang="ts">
+	import getLevelCode from "$lib/python/get-level-code";
+	import { parsePythonFunctions } from "$lib/python/pydoc-parser";
+	import { marked } from "marked";
 	import Tab from "./tabs/tab.svelte";
 	import TabList from "./tabs/tabList.svelte";
 	import TabPanel from "./tabs/tabPanel.svelte";
@@ -17,7 +20,7 @@
 
 			<TabPanel name="overview">
 				<div class="tutorial__section">
-					<p class="tutorial__title">Welcome to Code Block AI!</p>
+					<p class="tutorial__title">Welcome to Prompt or Get Prompted!</p>
 					<p class="tutorial__paragraph">
 						Code Block AI is a playful, AI-driven way to learn Python through a coding puzzle game. You’ll control a cube that navigates a 2D map
 						using predefined Python functions. But here's the twist — you don't write the code yourself. Instead, you guide an AI with smart prompts
@@ -29,11 +32,11 @@
 				<div class="tutorial__section">
 					<p class="tutorial__title">🎯 Your Goal</p>
 					<p class="tutorial__paragraph">
-						Move the cube from the <strong>start</strong> to the <strong>goal</strong> using code. You’ll do this by giving the AI a prompt like:
+						Move <i>Zayac</i> from the <strong>start</strong> to the <strong>finish</strong> using code. You’ll do this by giving the AI a prompt like:
 					</p>
 					<pre class="tutorial__code">
 <code>
-Move the cube forward 3 steps, then turn right and go forward 2 more steps.
+Move the character forward 3 steps, then turn right and move forward 2 steps.
 </code>
 </pre>
 					<p class="tutorial__paragraph">The AI will convert your prompt into Python using a restricted set of allowed functions, like:</p>
@@ -44,15 +47,8 @@ turn_right()
 move_forward(2)
 </code>
 </pre>
+					<p class="tutorial__paragraph">The AI will get less cooperative as you progress, so be precise in your prompts.</p>
 				</div>
-				<div class="tutorial__section">
-					<p class="tutorial__title">🧠 Why Prompt-Based?</p>
-					<p class="tutorial__paragraph">
-						This game teaches you how to think like a developer — not just in code, but in *instructions*. It’s also a gentle introduction to prompt
-						engineering, which is a growing skill in AI development.
-					</p>
-				</div>
-				<img src="https://placehold.co/600" alt="Prompt to code conversion illustration" class="tutorial__img" />
 				<div class="tutorial__section">
 					<p class="tutorial__title">🚀 Tips to Succeed</p>
 					<ul class="tutorial__list">
@@ -68,11 +64,30 @@ move_forward(2)
 			</TabPanel>
 
 			<TabPanel name="functions">
-				<p>These are the predefined Python functions you can use in your prompts.</p>
+				<p class="tutorial__paragraph">
+					Ready? Go to the <strong>Functions</strong> tab to see all commands, or jump into a level!
+
+					<br />
+
+					{#await getLevelCode(1) then code}
+						{@html marked("---\n\n" + parsePythonFunctions(code))}
+					{/await}
+				</p>
 			</TabPanel>
 
 			<TabPanel name="tips">
-				<p>Write effective prompts to help AI generate optimal code solutions.</p>
+				<p class="tutorial__paragraph">Here are some resources to learn AI prompting:</p>
+				<ul class="tutorial__list">
+					<li><a href="https://learnprompting.org/" class="tutorial__link">Learnprompting</a></li>
+					<li>
+						<a href="https://help.openai.com/en/articles/10032626-prompt-engineering-best-practices-for-chatgpt" class="tutorial__link"
+							>OpenAI Prompt Engineering</a
+						>
+					</li>
+					<li>
+						<a href="https://cookbook.openai.com/examples/gpt4-1_prompting_guide" class="tutorial__link">OpenAI Cookbook: GPT-4 Prompting Guide</a>
+					</li>
+				</ul>
 			</TabPanel>
 		</Tabs>
 	</div>

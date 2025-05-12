@@ -109,11 +109,12 @@
 <div class="wrapper" bind:this={canvasContainer}>
 	<section class="section hero">
 		<div class="container">
-			<h2 class="section__title">Master Python by Outsmarting a Cube — With AI as Your Teammate</h2>
+			<h2 class="section__title">Master Python by Outsmarting <i>Zayac</i> — With AI as Your Teammate</h2>
 			<p class="section__text">
-				Welcome to Code Block AI, a unique game where the only way to win is by guiding a cube through obstacles — using Python code you can't write
-				yourself. Instead, you'll craft prompts and collaborate with AI to generate the logic. It's not just coding. It's prompt-powered
-				problem-solving.
+				You have gotten access into the control room of <i>Zayac</i> - an evil robot from the series <i>Well, Just You Wait!</i> The room is modern, in
+				2050 there are no developers around and the only way you can write code is my talking to AI which will write the code for you. You have to give
+				it the right instructions, otherwise it will not work. The AI is a bit dumb, so you have to be very precise in your instructions. You can use only
+				a limited set of functions, but you can combine them in any way you want.
 			</p>
 			<div class="section__cta">
 				<Button href="/gameselect" variant="primary">Play Now</Button>
